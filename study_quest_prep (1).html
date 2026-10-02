@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏆🥇🎮 Study Champions League</title>
+<style>
+:root{--ink:#20243a;--muted:#737994;--bg:#f5f7ff;--card:#fff;--line:#e8eaf4;--purple:#7257e8;--purple2:#eeeaff;--green:#159b72;--greenbg:#e6f8f1;--orange:#f29b38;--orangebg:#fff3e2;--blue:#3e8de3;--bluebg:#eaf4ff;--pink:#e85d9e;--shadow:0 12px 35px rgba(42,45,88,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.45}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:10px 14px;font-weight:700;transition:.15s}button:hover{transform:translateY(-1px)}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;color:var(--ink);outline:none}input:focus,select:focus,textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px #7257e81a}textarea{resize:vertical;min-height:70px}.app{max-width:1240px;margin:auto;padding:22px}.hero{background:linear-gradient(120deg,#0d47a1,#6752dc 48%,#f97316);border-radius:25px;padding:27px;color:#fff;display:block;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"🚗  ⚽  🚀";position:absolute;font-size:68px;right:4%;bottom:14px;opacity:.72;transform:rotate(-7deg);filter:drop-shadow(0 5px 5px rgba(20,20,70,.22));pointer-events:none;z-index:0}.hero>div{position:relative;z-index:1}.hero h1{font-size:clamp(22px,3.5vw,42px);margin:4px 0;white-space:nowrap;line-height:1.15}.hero p{margin:0;color:#f3efff}.eyebrow{text-transform:uppercase;letter-spacing:1.7px;font-size:11px;font-weight:900;opacity:.8}.hero-actions{display:flex;gap:8px;flex-wrap:wrap;z-index:1;position:relative;margin-top:18px;justify-content:flex-start}.btn-light{background:#fff;color:var(--purple)}.btn-glass{background:#ffffff25;color:#fff;border:1px solid #ffffff60}.topstats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:17px 0}.stat,.panel,.subject-card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.stat{padding:16px}.stat .label{font-size:12px;color:var(--muted);font-weight:700}.stat strong{display:block;font-size:25px;margin:4px 0}.progress{height:8px;background:#eeeef7;border-radius:20px;overflow:hidden;margin-top:8px}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));border-radius:20px;width:0;transition:width .25s}.progress.green span{background:linear-gradient(90deg,#159b72,#34d399)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.tab{background:#eaeaf5;color:#646983}.tab.active{background:var(--purple);color:#fff}.view{display:none}.view.active{display:block}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin:20px 0 13px}.section-head h2{margin:0;font-size:22px}.section-head p{margin:3px 0;color:var(--muted);font-size:13px}.panel{padding:18px;margin-bottom:15px}.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:15px}.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field label{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;color:#656b87;margin-bottom:5px}.field.full{grid-column:1/-1}.primary{background:var(--purple);color:#fff}.soft{background:var(--purple2);color:var(--purple)}.success{background:var(--greenbg);color:var(--green)}.warning{background:var(--orangebg);color:#a86612}.danger{background:#fff0f1;color:#c44555}.small{font-size:12px;padding:7px 10px}.tiny{font-size:11px;padding:4px 8px;border-radius:8px}.muted{color:var(--muted)}.daybar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.daybar input{width:auto}.mission-list{display:grid;gap:10px}.mission{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff;transition:.15s}.mission:hover{border-color:#d0c9f8}.mission[draggable="true"]{cursor:grab}.mission.dragging{opacity:.45;transform:scale(.98);border:2px dashed var(--purple)}.mission.drag-over{border:2px solid var(--orange);box-shadow:0 0 0 4px #f29b3822}.mission.done{background:#f2fbf7;border-color:#c8efdf}.check{width:22px;height:22px;accent-color:var(--green);margin-top:3px;cursor:pointer}.mission-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}.mission-title{font-weight:800;font-size:15px}.mission-meta{font-size:12px;color:var(--muted);margin-top:4px}.subject-badge{display:inline-flex;align-items:center;gap:5px;border-radius:9px;padding:4px 10px;font-size:12px;font-weight:800;background:var(--purple2);color:var(--purple);border:1px solid #dcd4ff}.subject-badge.prayer{background:#e6f8f1;color:#0f766e;border-color:#b7ebd9}.subject-badge.life{background:#fef3c7;color:#92400e;border-color:#fde68a}.inline-subject-select{width:auto;padding:3px 8px;font-size:12px;font-weight:700;border-radius:8px;background:#f8f7ff;border:1px solid #dcd4ff;color:var(--purple);cursor:pointer}.pill{display:inline-block;border-radius:20px;padding:4px 8px;font-size:11px;font-weight:800;background:#f0eff8;color:#68618d;margin:3px 3px 0 0}.pill.school{background:var(--bluebg);color:#3176bd}.pill.private{background:var(--orangebg);color:#a86612}.pill.lesson{background:#fceafa;color:#ad4c92}.pill.life{background:var(--greenbg);color:var(--green)}.subject-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.subject-card{padding:16px;display:flex;flex-direction:column;gap:10px;transition:.18s}.subject-card.subject-dragging{opacity:.4;transform:scale(.98)}.subject-card.subject-drag-over{border:2px solid var(--orange);box-shadow:0 0 0 4px #f29b3822}.subject-drag-handle{cursor:grab;user-select:none;background:#f1efff;color:var(--purple);border-radius:9px;padding:4px 8px;font-size:11px;font-weight:900;white-space:nowrap}.subject-top{display:flex;gap:10px;align-items:center}.subject-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:14px;background:var(--purple2);font-size:23px}.subject-card h3{margin:0;font-size:16px}.subject-card p{margin:2px 0 0;color:var(--muted);font-size:12px}.subject-card .mini{font-size:12px;color:#555b78}.subject-card .actions{display:flex;gap:7px;margin-top:auto}.subject-card .actions button{flex:1}.empty{text-align:center;padding:25px;color:var(--muted);border:1px dashed #d8d9e9;border-radius:14px}.accomplishment{background:linear-gradient(120deg,#effcf6,#f4f0ff);border:1px solid #d9f0e6;border-radius:16px;padding:17px}.accomplishment h3{margin:0 0 8px}.accomplishment textarea{background:#ffffffc9}.rewards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.reward{border:1px solid var(--line);padding:13px;border-radius:13px;background:#fff}.reward strong{display:block}.badge{font-size:23px}.footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 0 8px}.modal-backdrop{display:none;position:fixed;inset:0;background:#17172d80;z-index:10;padding:20px;overflow:auto;align-items:center;justify-content:center}.modal-backdrop.show{display:flex}.modal{width:min(650px,100%);background:#fff;border-radius:22px;padding:22px;box-shadow:0 25px 80px #0003}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.modal-head h2{margin:0}.modal-head button{background:#f1f1f8}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#20243a;color:#fff;padding:12px 18px;border-radius:12px;display:none;z-index:20;box-shadow:var(--shadow)}.toast.show{display:block}.week-row{display:grid;grid-template-columns:110px 1fr 1fr;gap:12px;padding:12px 10px;border-bottom:1px solid var(--line);align-items:start}.week-row:last-child{border:0}.hint{font-size:12px;color:var(--muted);margin-top:8px}.quick-add{display:flex;gap:8px;flex-wrap:wrap}.quick-add button{font-size:12px}
+.board-filter-bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:10px 12px;background:#f8f9ff;border:1px solid var(--line);border-radius:13px;margin-bottom:12px}
+.board-filter-bar .filter-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-right:4px}
+.chip{border-radius:20px;padding:5px 11px;font-size:12px;font-weight:700;background:#fff;color:#555b78;border:1px solid var(--line);cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--purple);color:var(--purple)}
+.chip.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.chip.add-chip{background:var(--purple2);color:var(--purple);border-color:#d6ceff}
+.group-header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--purple2);color:var(--purple);border-radius:10px;font-weight:800;font-size:13px;margin-top:6px}
+.weekly-stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:11px}
+.weekly-stat-card{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff;display:flex;flex-direction:column;gap:7px}
+.weekly-stat-card.studied{border-color:#d5ceff;background:linear-gradient(180deg,#ffffff,#faf9ff)}
+.weekly-stat-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.weekly-stat-name{font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px}
+.weekly-stat-pct{font-weight:900;font-size:15px;color:var(--purple)}
+.weekly-stat-pct.done{color:var(--green)}
+.weekly-stat-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);flex-wrap:wrap;gap:4px}
+.count-pill{display:inline-flex;align-items:center;gap:4px;background:#eef2ff;color:#4338ca;font-weight:800;font-size:11px;padding:3px 8px;border-radius:99px}
+.count-pill.active{background:var(--greenbg);color:var(--green)}
+.subject-week-box{background:#f8f9ff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:12px}
+.inline-add-box{display:none;background:#f8f7ff;border:1px solid #d7d0ff;border-radius:12px;padding:11px;margin-top:8px}
+.inline-add-box.show{display:block}
+@media(max-width:850px){.subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.hero:after{right:3%;font-size:54px;opacity:.5}.topstats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.app{padding:12px}.subject-grid{grid-template-columns:1fr}.field-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.topstats{gap:8px}.stat{padding:12px}.stat strong{font-size:21px}.mission{grid-template-columns:auto 1fr}.mission>.mission-actions{grid-column:2;justify-self:start}.rewards{grid-template-columns:1fr}.week-row{grid-template-columns:1fr}.hero{padding:21px}.hero h1{font-size:clamp(18px,6.2vw,28px)}.hero-actions button{padding:9px 10px}}
+@media print{body{background:#fff}.hero,.tabs,.hero-actions,.section-head button,.actions,.footer,.board-filter-bar{display:none!important}.app{max-width:none;padding:0}.view{display:none!important}#daily.view.active{display:block!important}.panel,.stat{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div>
+      <div class="eyebrow">🏟️ PREP 1 • MOZI’S TURBO LEARNING ARENA</div>
+      <h1>🏆🥇🎮 Study Champions League</h1>
+      <p>Start your engine. Score learning goals. Fill your boost. Level up! 🔥</p>
+    </div>
+    <div class="hero-actions">
+      <button class="btn-light" onclick="openMission()">＋ Add mission</button>
+      <button class="btn-glass" onclick="openSubject()">📚 ＋ Subject / Area</button>
+      <button class="btn-glass" onclick="exportData()">⬇ Backup</button>
+      <button class="btn-glass" onclick="document.getElementById('importFile').click()">⬆ Restore</button>
+      <input id="importFile" type="file" accept=".json,application/json" hidden onchange="importData(event)">
+    </div>
+  </header>
+
+  <section class="topstats">
+    <div class="stat"><div class="label">🔥 BOOST XP</div><strong id="totalXP">0</strong><div class="muted" style="font-size:12px">Fill the boost meter! 🚀</div></div>
+    <div class="stat"><div class="label">⚽ MATCH PROGRESS</div><strong id="progressText">0%</strong><div class="progress"><span id="progressBar"></span></div></div>
+    <div class="stat"><div class="label">🥅 GOALS SCORED</div><strong id="doneText">0 / 0</strong><div class="muted" style="font-size:12px">One step at a time</div></div>
+    <div class="stat"><div class="label">🏆 ARENA RANK</div><strong id="levelText">Level 1</strong><div class="muted" id="levelHint" style="font-size:12px">Your next level is waiting!</div></div>
+  </section>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="daily">📅 Daily Missions</button>
+    <button class="tab" data-view="subjects">📚 Subject / Area Map</button>
+    <button class="tab" data-view="week">🗓️ Week Planner & Progress</button>
+    <button class="tab" data-view="wins">🏆 My Accomplishments</button>
+    <button class="tab" data-view="parent">👨‍👩‍👦 Parent Settings</button>
+  </nav>
+
+  <main>
+    <section id="daily" class="view active">
+      <div class="section-head">
+        <div><h2>🎮 Today's Missions</h2><p>Your plan can change. You are in control!</p></div>
+        <div class="daybar"><button class="soft small" onclick="shiftDay(-1)">← Previous</button><input type="date" id="selectedDate" onchange="renderDaily();renderWeek();renderSubjects()"><button class="soft small" onclick="shiftDay(1)">Next →</button><button class="soft small" onclick="setToday()">Today</button></div>
+      </div>
+      <div class="panel">
+        <div class="section-head" style="margin-top:0">
+          <div><h2 style="font-size:17px">📝 Quick Add</h2><p>Add school homework, private homework, prayer, a lesson, or a life mission.</p></div>
+          <button class="soft small" onclick="openSubject()">⚙️ Add / Edit Subject or Area</button>
+        </div>
+        <div class="quick-add">
+          <button class="soft" onclick="openMission({type:'School HW'})">🏫 School HW</button>
+          <button class="soft" onclick="openMission({type:'Private HW'})">📒 Private Lesson HW</button>
+          <button class="soft" onclick="openMission({type:'Private Lesson'})">👨‍🏫 Private Lesson Slot</button>
+          <button class="success" onclick="openMission({subject:'prayer',type:'Prayer Reminder',title:'Prayer on time',minutes:10,xp:15})">🤲 Prayer</button>
+          <button class="soft" onclick="openMission({subject:'life',type:'Life Skill'})">🌟 Life Mission</button>
+          <button class="soft" onclick="openMission({subject:'programming',type:'Programming'})">💻 Coding Quest</button>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="panel">
+          <div class="section-head" style="margin-top:0">
+            <div>
+              <h2 style="font-size:18px">📌 Mission Board</h2>
+              <p>Each mission shows its <strong>Subject / Area</strong>. Filter, group, or change subjects directly below.</p>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <button class="soft small" id="groupToggleBtn" onclick="toggleBoardGrouping()">🗂️ Group by Subject/Area</button>
+              <button class="soft small" id="multiSelectBtn" onclick="toggleMissionMultiSelect()">☑ Select missions</button>
+              <button class="danger small" id="deleteSelectedBtn" onclick="deleteSelectedMissions()" style="display:none">🗑️ Delete selected (0)</button>
+              <button class="primary small" onclick="openMission()">＋ Add Mission</button>
+            </div>
+          </div>
+          <div id="boardFilterBar" class="board-filter-bar"></div>
+          <div id="missionList" class="mission-list"></div>
+        </div>
+        <div>
+          <div class="panel">
+            <div class="section-head" style="margin-top:0"><div><h2 style="font-size:18px">🧠 How is your energy?</h2><p>Choose a plan that fits your day.</p></div></div>
+            <div class="quick-add"><button class="soft" onclick="setEnergy('High')">⚡ High</button><button class="soft" onclick="setEnergy('Good')">🙂 Good</button><button class="soft" onclick="setEnergy('Low')">😴 Low</button></div>
+            <p id="energyTip" class="hint">Pick your energy level. It's okay to adjust the plan.</p>
+          </div>
+          <div class="accomplishment" style="margin-bottom:15px">
+            <h3>🌟 Today's Accomplishment</h3>
+            <p class="muted" style="font-size:13px;margin-top:0">What did you learn or do well today? Even a small win matters.</p>
+            <textarea id="dailyWin" placeholder="Today I did well at..."></textarea>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"><button class="primary" onclick="saveWin()">Save my win ✨</button><button class="soft" onclick="addReflectionPrompt()">Give me an idea 💡</button></div>
+          </div>
+          <div class="panel">
+            <div class="section-head" style="margin-top:0">
+              <div>
+                <h2 style="font-size:17px">📊 Weekly Subject Progress</h2>
+                <p id="dailyWeekRangeLabel">Progress % &amp; study count for each subject this week</p>
+              </div>
+              <button class="soft tiny" id="toggleAllWeeklyBtn" onclick="toggleShowAllWeekly()">Show all</button>
+            </div>
+            <div id="dailyWeeklySubjectStats" class="mission-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="subjects" class="view">
+      <div class="section-head">
+        <div>
+          <h2>📚 Subject / Area Map</h2>
+          <p>Editable subjects &amp; areas (including Prayer and Life). Add new ones or edit existing items anytime.</p>
+        </div>
+        <button class="primary" onclick="openSubject()">＋ Add Subject / Area</button>
+      </div>
+      <div id="subjectPrioritySummary" class="panel" style="margin-bottom:14px"></div>
+      <div id="subjectGrid" class="subject-grid"></div>
+      <div class="hint">Tip: Every item here appears in the "Subject / area" list when creating or editing missions, and tracks weekly progress % and study count.</div>
+    </section>
+
+    <section id="week" class="view">
+      <div class="section-head">
+        <div>
+          <h2>📊 Weekly Subject Progress &amp; Study Count</h2>
+          <p id="weekSummarySubtitle">Progress % and how many times each subject/area is studied this week.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="soft" onclick="openSubject()">＋ Add Subject / Area</button>
+          <button class="soft" onclick="printDaily()">🖨️ Print selected day</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div id="weeklySubjectGrid" class="weekly-stats-grid"></div>
+      </div>
+
+      <div class="section-head">
+        <div><h2>🗓️ 7-Day Week Planner</h2><p>See lessons, homework, and subjects across the week. Select a day to edit its missions.</p></div>
+      </div>
+      <div class="panel"><div id="weekGrid"></div></div>
+    </section>
+
+    <section id="wins" class="view">
+      <div class="section-head"><div><h2>🏆 My Accomplishments</h2><p>Celebrate progress, not perfection.</p></div><button class="soft" onclick="clearWins()">Clear accomplishment notes</button></div>
+      <div class="panel"><div id="winsList"></div></div>
+      <div class="section-head"><div><h2>🎁 Reward Ideas</h2><p>Rewards are flexible family agreements, not automatic promises.</p></div></div>
+      <div class="rewards">
+        <div class="reward"><div class="badge">⚽</div><strong>Club or playground</strong><span class="muted" style="font-size:12px">Active time together</span></div>
+        <div class="reward"><div class="badge">🎮</div><strong>Gaming time</strong><span class="muted" style="font-size:12px">After responsibilities</span></div>
+        <div class="reward"><div class="badge">🍿</div><strong>Family fun</strong><span class="muted" style="font-size:12px">Movie, outing, or choice</span></div>
+      </div>
+    </section>
+
+    <section id="parent" class="view">
+      <div class="section-head"><div><h2>👨‍👩‍👦 Parent Settings</h2><p>Customize the tool together. Changes are saved in this browser.</p></div></div>
+      <div class="grid2">
+        <div class="panel"><h3>👦 Learner Profile</h3><div class="field-grid">
+          <div class="field"><label>Child's name / nickname</label><input id="childName" placeholder="Your Study Hero"></div>
+          <div class="field"><label>School grade</label><input id="grade" value="Prep 1"></div>
+          <div class="field"><label>Daily XP goal</label><input id="xpGoal" type="number" min="10" max="1000" value="100"></div>
+          <div class="field"><label>Weekly XP goal</label><input id="weeklyGoal" type="number" min="10" max="5000" value="400"></div>
+          <div class="field full"><label>Family reward idea / agreement</label><input id="rewardText" placeholder="Example: choose a club activity together"></div>
+        </div><button class="primary" style="margin-top:13px" onclick="saveSettings()">Save settings</button></div>
+        <div class="panel"><h3>🌱 Helpful reminders</h3>
+          <p>• Keep study blocks short and add breaks.</p><p>• Start with the school book and teacher's notes.</p><p>• For Science and Social Studies: simplify, visualize, explain, then practise.</p><p>• Private lesson times and homework can be edited separately.</p><p>• Prayer, family responsibility, and sleep are routines—not competitions.</p>
+          <button class="danger small" onclick="resetApp()">Reset all data</button>
+          <p class="hint">Use Backup regularly if you want to keep a copy. This standalone HTML stores data in your browser only; it does not sync between devices.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>🧩 Customize Subjects, Prayer &amp; Routine Areas</h3>
+        <p class="muted">All items in "Subject / area" (including Prayer, Life &amp; Wellbeing, and school subjects) are fully editable. You can rename them, edit their study guides, or add new areas anytime.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="primary" onclick="openSubject()">＋ Add New Subject / Area</button>
+          <button class="success" onclick="openMission({subject:'prayer',type:'Prayer Reminder',title:'Prayer on time',minutes:10,xp:15})">🤲 Add Prayer Mission</button>
+          <button class="soft" onclick="openMission({subject:'life',type:'Life Skill'})">🌟 Add Life Mission</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div class="footer">🏆🥇🎮 Study Champions League • Learn • Score • Boost • Repeat! 🚀</div>
+</div>
+
+<div class="modal-backdrop" id="missionModal" onclick="if(event.target===this)closeModal('missionModal')"><div class="modal">
+  <div class="modal-head"><h2 id="missionModalTitle">✨ Add a mission</h2><button onclick="closeModal('missionModal')">✕</button></div>
+  <form id="missionForm" onsubmit="saveMission(event)">
+    <input type="hidden" id="missionId">
+    <div class="field-grid">
+      <div class="field"><label>Mission title *</label><input id="mTitle" required placeholder="Example: Review fractions / Dhuhr Prayer"></div>
+      <div class="field">
+        <label>
+          <span>Subject / area</span>
+          <span style="display:inline-flex;gap:4px">
+            <button type="button" class="soft tiny" onclick="toggleQuickSubjectBox()" title="Quickly add a new Subject or Area">＋ Add new</button>
+            <button type="button" class="soft tiny" onclick="editSelectedSubjectFromMission()" title="Edit the selected Subject or Area">✏️ Edit</button>
+          </span>
+        </label>
+        <select id="mSubject"></select>
+        <div id="quickSubjectBox" class="inline-add-box">
+          <div style="font-size:12px;font-weight:800;color:var(--purple);margin-bottom:6px">✨ Quick Add / Edit Subject or Area</div>
+          <div style="display:grid;grid-template-columns:64px 1fr auto;gap:6px;align-items:center">
+            <input type="text" id="qsEmoji" placeholder="🤲" value="📌" maxlength="8" title="Emoji">
+            <input type="text" id="qsName" placeholder="e.g. Prayer, Quran, German...">
+            <button type="button" class="primary small" onclick="saveQuickSubject()">Save</button>
+          </div>
+          <div class="hint" style="margin-top:5px">Need more options (study method, sources, weekly target)? <a href="#" onclick="event.preventDefault();openSubjectFromMission()">Open full editor</a></div>
+        </div>
+      </div>
+      <div class="field"><label>Type</label><select id="mType"><option>School HW</option><option>Private HW</option><option>Private Lesson</option><option>Study / Revision</option><option>Quiz / Practice</option><option>Prayer Reminder</option><option>Life Skill</option><option>Programming</option><option>Creative Activity</option><option>Sport / Movement</option><option>Other</option></select></div>
+      <div class="field"><label>Time slot (optional)</label><input id="mTime" placeholder="e.g. 5:00–6:00 PM"></div>
+      <div class="field"><label>Estimated minutes</label><input id="mMinutes" type="number" min="1" max="240" value="20"></div>
+      <div class="field"><label>XP reward</label><input id="mXP" type="number" min="0" max="500" value="15"></div>
+      <div class="field full"><label>Notes / what to do</label><textarea id="mNotes" placeholder="Pages, questions, teacher notes, or small steps..."></textarea></div>
+      <div class="field full"><label style="justify-content:flex-start;gap:9px;cursor:pointer"><input id="mDaily" type="checkbox" style="width:auto"> 🔁 Create this mission every day</label><div class="hint">A fresh, unchecked copy will be added automatically whenever you open a new day.</div></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:15px"><button type="button" class="soft" onclick="closeModal('missionModal')">Cancel</button><button class="primary" type="submit">Save mission ✓</button></div>
+  </form>
+</div></div>
+
+<div class="modal-backdrop" id="subjectModal" onclick="if(event.target===this)closeModal('subjectModal')"><div class="modal">
+  <div class="modal-head"><h2 id="subjectModalTitle">📚 Edit Subject / Area</h2><button onclick="closeModal('subjectModal')">✕</button></div>
+  <form id="subjectForm" onsubmit="saveSubject(event)">
+    <input type="hidden" id="sId">
+    <div class="field-grid">
+      <div class="field"><label>Subject / Area name *</label><input id="sName" required placeholder="e.g. Prayer, Math, Science..."></div>
+      <div class="field"><label>Emoji</label><input id="sEmoji" maxlength="8" placeholder="📚"></div>
+      <div class="field"><label>Private lessons?</label><select id="sPrivate"><option value="yes">Yes</option><option value="no">No</option></select></div>
+      <div class="field"><label>Usual session length (min)</label><input id="sMinutes" type="number" min="5" max="180" value="20"></div>
+      <div class="field full">
+        <label><span>Weekly target sessions (optional)</span><span class="muted" style="font-weight:500">0 = auto % from scheduled weekly missions</span></label>
+        <input id="sWeeklyTarget" type="number" min="0" max="50" value="0" placeholder="0 (Auto from planned missions)">
+      </div>
+      <div class="field full"><label>Best way to study / practice</label><textarea id="sMethod"></textarea></div>
+      <div class="field full"><label>Sources / links</label><textarea id="sSources" placeholder="Add official school resources, teacher notes, videos, or useful links"></textarea></div>
+      <div class="field full"><label>Extra notes</label><textarea id="sNotes"></textarea></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:space-between;margin-top:15px"><button type="button" class="danger small" id="deleteSubjectBtn" onclick="deleteSubject()">Delete subject/area</button><div style="display:flex;gap:8px"><button type="button" class="soft" onclick="closeModal('subjectModal')">Cancel</button><button class="primary" type="submit">Save subject/area ✓</button></div></div>
+  </form>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const defaultSubjects = [
+{id:'prayer',name:'Prayer',emoji:'🤲',private:false,minutes:10,weeklyTarget:0,method:'Perform daily prayers on time with focus and calmness (Fajr, Dhuhr, Asr, Maghrib, Isha).',sources:'Daily prayer schedule & calm family reminder.',notes:'A peaceful spiritual habit and daily anchor—not a competition.'},
+{id:'life',name:'Life & Wellbeing',emoji:'🌟',private:false,minutes:15,weeklyTarget:0,method:'Tidy room, prepare school bag, help family, move your body, and get good rest.',sources:'Daily home routine & healthy habits.',notes:'Keep tasks kind, realistic, and supportive.'},
+{id:'library',name:'Library',emoji:'📚',private:false,minutes:20,weeklyTarget:0,method:'Choose a suitable book, read one focused section, note a new word or interesting idea, then give a short summary in your own words.',sources:'School library, home books, reading list, librarian or teacher recommendations.',notes:'Reading for enjoyment counts too. Record the book title and pages read.'},
+{id:'arabic',name:'Arabic',emoji:'🇪🇬',private:true,minutes:20,weeklyTarget:0,method:'After the private lesson: review the teacher notes, finish homework, practise grammar and reading, then add mistakes to a small Mistake Book.',sources:'School book + private teacher notes + assigned homework. Add teacher-approved practice links here.',notes:'Keep the teacher’s plan as the main guide.'},
+{id:'english',name:'English',emoji:'🇬🇧',private:true,minutes:15,weeklyTarget:0,method:'Learn 5 words, listen and repeat, practise one grammar point, then write your own sentence. Use short quizzes and fun challenges.',sources:'School book + private teacher notes. Optional: British Council LearnEnglish Teens — https://learnenglishteens.britishcouncil.org/',notes:'Use English as a confidence-building subject.'},
+{id:'math',name:'Math',emoji:'➗',private:true,minutes:20,weeklyTarget:0,method:'Warm-up → solve practice questions → find the mistake → try one challenge question. Focus on accuracy, not repeating easy questions.',sources:'School book + private teacher notes + assigned worksheets.',notes:'Offer optional Genius / Boss challenges when school work is done.'},
+{id:'science',name:'Science',emoji:'🔬',private:false,minutes:20,weeklyTarget:0,method:'1) Explain the idea in 3–5 simple sentences. 2) Draw a diagram or watch a short lesson. 3) Explain it in your own words. 4) Solve 5 questions.',sources:'School book and teacher notes first. Add a specific lesson video or official learning resource here: __________________',notes:'Make hard ideas visual. Split long lessons into small parts.'},
+{id:'social',name:'Social Studies',emoji:'🌍',private:false,minutes:15,weeklyTarget:0,method:'Turn geography into map missions and history into a story/timeline. Learn a small section, use flashcards, then answer questions without looking.',sources:'School book + teacher notes. Use a map/timeline and add a teacher-approved video link here: __________________',notes:'Start with the easiest or most interesting section to build confidence.'},
+{id:'ict',name:'ICT',emoji:'💻',private:false,minutes:20,weeklyTarget:0,method:'Learn by doing: read/watch a short explanation, complete one practical task, then explain what you did.',sources:'School/teacher instructions if provided. Add class notes, links, or required topics here. No school book noted.',notes:'Keep tasks practical and safe online.'},
+{id:'skills',name:'Skills & Fields',emoji:'🛠️',private:false,minutes:15,weeklyTarget:0,method:'Make a mini project: read the task, list the steps, do it, and show the result. Practise planning, creativity, and problem solving.',sources:'Teacher instructions, worksheets, or class notes. No school book noted.',notes:'Customize the name and tasks to match the exact school subject.'},
+{id:'religion',name:'Religion',emoji:'🕌',private:false,minutes:10,weeklyTarget:0,method:'Understand the meaning, learn a small section, review yesterday’s part, then answer 3 questions. Use short, regular revision.',sources:'School book + teacher notes + assigned memorization.',notes:'Keep it meaningful and calm; not a competition.'},
+{id:'sketch',name:'Sketch / Art',emoji:'🎨',private:false,minutes:20,weeklyTarget:0,method:'Prepare materials, follow the assignment steps, then add one creative detail. Take a photo of the finished work if useful.',sources:'Teacher instructions, class examples, and drawing materials.',notes:'Creative time can also be a relaxing break.'},
+{id:'french',name:'French',emoji:'🇫🇷',private:false,minutes:10,weeklyTarget:0,method:'Learn 5 words, listen and repeat pronunciation, match words to meanings, then answer a tiny quiz or make one sentence.',sources:'School book + teacher notes. Optional: TV5MONDE Apprendre — https://apprendre.tv5monde.com/',notes:'Short, frequent practice is better than a long cram session.'},
+{id:'programming',name:'Programming (Extra Quest)',emoji:'👨‍💻',private:false,minutes:25,weeklyTarget:0,method:'Choose one small project, build a tiny part, test it, and write what you learned. Ask for hints before asking for a full solution.',sources:'Scholarship lessons and instructor resources. Add coding platform/project links here.',notes:'Extra learning should stay fun and should not replace school rest time.'}
+];
+
+let deletedDefaultIds = JSON.parse(localStorage.getItem('sq_deleted_defaults')||'[]');
+let savedSubjects = JSON.parse(localStorage.getItem('sq_subjects')||'null');
+if (savedSubjects) {
+  // Ensure Prayer and Life & Wellbeing are present in existing saved data unless explicitly deleted
+  ['life','prayer','library'].forEach(reqId => {
+    if (!savedSubjects.some(s => s.id === reqId) && !deletedDefaultIds.includes(reqId)) {
+      const def = defaultSubjects.find(d => d.id === reqId);
+      if (def) savedSubjects.unshift({...def});
+    }
+  });
+}
+let subjects = savedSubjects || defaultSubjects.map(d => ({...d}));
+let missions = JSON.parse(localStorage.getItem('sq_missions')||'null') || [];
+let dailyTemplates = JSON.parse(localStorage.getItem('sq_daily_templates')||'null') || [];
+let deletedDailyTemplateIds = JSON.parse(localStorage.getItem('sq_deleted_daily_templates')||'[]');
+let skippedDailyMissions = JSON.parse(localStorage.getItem('sq_skipped_daily_missions')||'{}');
+const prayerTemplates = [
+  {id:'daily-prayer-fajr',title:'Fajr Prayer',time:'',minutes:10},
+  {id:'daily-prayer-dhuhr',title:'Dhuhr Prayer',time:'',minutes:10},
+  {id:'daily-prayer-asr',title:'Asr Prayer',time:'',minutes:10},
+  {id:'daily-prayer-maghrib',title:'Maghrib Prayer',time:'',minutes:10},
+  {id:'daily-prayer-isha',title:'Isha Prayer',time:'',minutes:10}
+];
+prayerTemplates.forEach(p=>{if(!dailyTemplates.some(t=>t.id===p.id))dailyTemplates.push({...p,subject:'prayer',type:'Prayer Reminder',xp:15,notes:'',builtIn:true});});
+const dailySubjectTemplates = [
+  ['life','Life & Wellbeing daily mission','Life Skill'],
+  ['arabic','Arabic daily study','Study / Revision'],
+  ['english','English daily study','Study / Revision'],
+  ['math','Math daily practice','Quiz / Practice'],
+  ['science','Science daily study','Study / Revision'],
+  ['social','Social Studies daily study','Study / Revision'],
+  ['ict','ICT daily mission','Study / Revision'],
+  ['skills','Skills & Fields daily mission','Creative Activity'],
+  ['religion','Religion daily study','Study / Revision'],
+  ['sketch','Sketch / Art daily mission','Creative Activity'],
+  ['french','French daily study','Study / Revision'],
+  ['library','Library daily reading','Study / Revision']
+];
+dailyTemplates.forEach(t=>{if(t.builtIn)t.xp=15;});
+
+dailySubjectTemplates.forEach(([subject,title,type])=>{
+  const id='daily-subject-'+subject;
+  if(!dailyTemplates.some(t=>t.id===id)){
+    const sub=subjects.find(s=>s.id===subject);
+    dailyTemplates.push({id,title,subject,type,time:'',minutes:sub?.minutes||20,xp:15,notes:'',builtIn:true});
+  }
+});
+let wins = JSON.parse(localStorage.getItem('sq_wins')||'{}');
+let settings = JSON.parse(localStorage.getItem('sq_settings')||'{}');
+let energy = JSON.parse(localStorage.getItem('sq_energy')||'{}');
+let manualSubjectStatus = JSON.parse(localStorage.getItem('sq_subject_status')||'{}');
+function cairoToday(){
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Africa/Cairo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const get=type=>parts.find(p=>p.type===type)?.value;
+  return `${get('year')}-${get('month')}-${get('day')}`;
+}
+let selectedDate = cairoToday();
+let boardSubjectFilter = 'all';
+let groupBoardBySubject = false;
+let showAllWeeklySubjects = false;
+let missionMultiSelect = false;
+let selectedMissionIds = new Set();
+
+function saveAll(){
+  localStorage.setItem('sq_subjects',JSON.stringify(subjects));
+  localStorage.setItem('sq_deleted_defaults',JSON.stringify(deletedDefaultIds));
+  localStorage.setItem('sq_missions',JSON.stringify(missions));
+  localStorage.setItem('sq_daily_templates',JSON.stringify(dailyTemplates));
+  localStorage.setItem('sq_deleted_daily_templates',JSON.stringify(deletedDailyTemplateIds));
+  localStorage.setItem('sq_skipped_daily_missions',JSON.stringify(skippedDailyMissions));
+  localStorage.setItem('sq_wins',JSON.stringify(wins));
+  localStorage.setItem('sq_settings',JSON.stringify(settings));
+  localStorage.setItem('sq_energy',JSON.stringify(energy));
+  localStorage.setItem('sq_subject_status',JSON.stringify(manualSubjectStatus));
+}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2300)}
+function ensureDailyMissions(dateStr){
+  dailyTemplates.forEach(t=>{
+    const skipped=(skippedDailyMissions[dateStr]||[]).includes(t.id);
+    if(!skipped && !missions.some(m=>m.date===dateStr && m.templateId===t.id)){
+      missions.push({id:'m'+Date.now()+Math.random().toString(36).slice(2,7),date:dateStr,title:t.title,subject:t.subject,type:t.type,time:t.time||'',minutes:t.minutes||20,xp:t.xp||0,notes:t.notes||'',done:false,templateId:t.id,daily:true});
+    }
+  });
+}
+function dateMissions(){ensureDailyMissions(selectedDate);return missions.filter(m=>m.date===selectedDate)}
+function getSubjectObj(id){
+  let found = subjects.find(s=>s.id===id);
+  if(found) return found;
+  if(id==='prayer') return {id:'prayer',name:'Prayer',emoji:'🤲'};
+  if(id==='life') return {id:'life',name:'Life & Wellbeing',emoji:'🌟'};
+  return {id:id||'general',name:id||'General',emoji:'📌'};
+}
+function subjectName(id){return getSubjectObj(id).name}
+function subjectEmoji(id){return getSubjectObj(id).emoji||'📚'}
+function subjectLabel(id){let s=getSubjectObj(id);return `${s.emoji||'📚'} ${s.name}`}
+function subjectBadgeClass(id){if(id==='prayer')return 'prayer';if(id==='life')return 'life';return ''}
+function typeClass(type){if(type==='School HW')return 'school';if(type==='Private HW')return 'private';if(type==='Private Lesson')return 'lesson';if(['Life Skill','Prayer Reminder','Sport / Movement'].includes(type))return 'life';return ''}
+
+function getWeekBounds(dateStr){
+  let d = new Date(dateStr+'T12:00:00');
+  let day = d.getDay();
+  let monday = new Date(d);
+  monday.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+  let days = [];
+  for(let i=0;i<7;i++){
+    let x = new Date(monday);
+    x.setDate(monday.getDate()+i);
+    days.push(x.toISOString().slice(0,10));
+  }
+  return {
+    monday,
+    sunday: new Date(days[6]+'T12:00:00'),
+    days,
+    label: `${monday.toLocaleDateString('en-GB',{month:'short',day:'numeric'})} – ${new Date(days[6]+'T12:00:00').toLocaleDateString('en-GB',{month:'short',day:'numeric'})}`
+  };
+}
+
+function getWeeklySubjectStats(dateStr = selectedDate){
+  const week = getWeekBounds(dateStr);
+  const weekMissions = missions.filter(m => week.days.includes(m.date));
+
+  // Include all defined subjects plus any custom/orphaned subject IDs used in weekMissions
+  const allIds = [...subjects.map(s => s.id)];
+  weekMissions.forEach(m => {
+    if (m.subject && !allIds.includes(m.subject)) allIds.push(m.subject);
+  });
+
+  const stats = allIds.map(id => {
+    const s = getSubjectObj(id);
+    const subMissions = weekMissions.filter(m => m.subject === id);
+    const studiedCount = subMissions.filter(m => m.done).length;
+    const plannedCount = subMissions.length;
+    const target = Number(s.weeklyTarget) || 0;
+    const denominator = target > 0 ? Math.max(target, plannedCount) : plannedCount;
+    const progressPct = denominator > 0 ? Math.min(100, Math.round((studiedCount / denominator) * 100)) : 0;
+    const minutesStudied = subMissions.filter(m => m.done).reduce((sum, m) => sum + (Number(m.minutes)||0), 0);
+    const totalMinutesPlanned = subMissions.reduce((sum, m) => sum + (Number(m.minutes)||0), 0);
+    // "Up to date" only considers missions scheduled on or before the selected day; future missions never make a subject behind.
+    const dueMissions = subMissions.filter(m => m.date <= dateStr);
+    const dueDone = dueMissions.filter(m => m.done).length;
+    const behindCount = dueMissions.filter(m => !m.done).length;
+    const statusPct = dueMissions.length ? Math.round((dueDone / dueMissions.length) * 100) : 100;
+    return {
+      id,
+      name: s.name,
+      emoji: s.emoji || '📚',
+      studiedCount,
+      plannedCount,
+      target,
+      denominator,
+      progressPct,
+      minutesStudied,
+      totalMinutesPlanned,
+      dueCount: dueMissions.length,
+      dueDone,
+      behindCount,
+      statusPct,
+      isUpToDate: behindCount === 0,
+      hasActivity: plannedCount > 0 || studiedCount > 0
+    };
+  });
+
+  return { week, stats };
+}
+
+function switchView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+  if(id==='daily')renderDaily();
+  if(id==='week')renderWeek();
+  if(id==='wins')renderWins();
+  if(id==='subjects')renderSubjects();
+}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
+
+function init(){
+  document.getElementById('selectedDate').value=selectedDate;
+  if(!localStorage.getItem('sq_missions')){
+    missions=[];
+  }
+  applySettings();
+  renderSubjectOptions();
+  renderDaily();
+  renderSubjects();
+  renderWeek();
+  renderWins();
+  setTimeout(checkBackupReminder,700);
+}
+
+function shiftDay(n){
+  let d=new Date(selectedDate+'T12:00:00');
+  d.setDate(d.getDate()+n);
+  selectedDate=d.toISOString().slice(0,10);
+  document.getElementById('selectedDate').value=selectedDate;
+  renderDaily();
+  renderWeek();
+  renderSubjects();
+}
+function setToday(){
+  selectedDate=cairoToday();
+  document.getElementById('selectedDate').value=selectedDate;
+  renderDaily();
+  renderWeek();
+  renderSubjects();
+}
+
+function setBoardFilter(subId){
+  boardSubjectFilter = subId;
+  renderDaily();
+}
+function toggleBoardGrouping(){
+  groupBoardBySubject = !groupBoardBySubject;
+  const btn = document.getElementById('groupToggleBtn');
+  if(btn) btn.textContent = groupBoardBySubject ? '📋 List View' : '🗂️ Group by Subject/Area';
+  renderDaily();
+}
+function toggleShowAllWeekly(){
+  showAllWeeklySubjects = !showAllWeeklySubjects;
+  const btn = document.getElementById('toggleAllWeeklyBtn');
+  if(btn) btn.textContent = showAllWeeklySubjects ? 'Studied only' : 'Show all';
+  renderDailyWeeklyStats();
+  updateMultiSelectButtons();
+}
+
+function renderMissionCard(m){
+  const sub = getSubjectObj(m.subject);
+  const subjectOptionsHtml = subjects.map(s =>
+    `<option value="${esc(s.id)}" ${s.id===m.subject?'selected':''}>${esc(s.emoji||'📚')} ${esc(s.name)}</option>`
+  ).join('');
+
+  return `<div class="mission ${m.done?'done':''}" draggable="true" data-mission-id="${m.id}" ondragstart="missionDragStart(event,'${m.id}')" ondragover="missionDragOver(event)" ondragleave="event.currentTarget.classList.remove('drag-over')" ondrop="missionDrop(event,'${m.id}')" ondragend="missionDragEnd()" title="Drag to reorder this mission">
+    <div style="display:flex;flex-direction:column;gap:7px;align-items:center">
+      <input class="check" type="checkbox" ${m.done?'checked':''} onchange="toggleMission('${m.id}')" title="Mark mission complete">
+      ${missionMultiSelect?`<input type="checkbox" style="width:18px;height:18px;accent-color:#dc2626" ${selectedMissionIds.has(m.id)?'checked':''} onchange="toggleMissionSelection('${m.id}',this.checked)" title="Select for deletion">`:''}
+    </div>
+    <div>
+      <div class="mission-top">
+        <span class="subject-badge ${subjectBadgeClass(m.subject)}" title="Subject / Area">${esc(sub.emoji||'📚')} ${esc(sub.name)}</span>
+        <select class="inline-subject-select" onchange="changeMissionSubject('${m.id}', this.value)" title="Change Subject / Area directly">
+          ${subjectOptionsHtml}
+        </select>
+        ${m.type?`<span class="pill ${typeClass(m.type)}">${esc(m.type)}</span>`:''}
+        <span class="pill">⭐ ${m.xp||0} XP</span>
+      </div>
+      <div class="mission-title">${esc(m.title)} ${m.done?'✨':''}</div>
+      <div class="mission-meta">⏱️ ${m.minutes||0} min ${m.time?'• 🕒 '+esc(m.time):''}</div>
+      ${m.notes?`<div class="mission-meta">${esc(m.notes)}</div>`:''}
+    </div>
+    <div class="mission-actions" style="display:flex;gap:5px;align-items:center">
+      <button class="soft small" onclick="duplicateMission('${m.id}')" title="Duplicate on this day">⧉ Duplicate</button>
+      <button class="soft small" onclick="editMission('${m.id}')">✏️ Edit</button>
+      <button class="danger small" onclick="deleteMission('${m.id}')" title="Delete this day's mission">✕</button>
+    </div>
+  </div>`;
+}
+
+function duplicateMission(id){
+  const source=missions.find(m=>m.id===id); if(!source)return;
+  const copy={...source,id:'m'+Date.now()+Math.random().toString(36).slice(2,6),title:source.title+' (copy)',done:false,templateId:null,daily:false};
+  missions.push(copy); saveAll(); renderDaily(); renderWeek(); renderSubjects(); toast('Mission duplicated on this day ⧉');
+}
+
+let draggedMissionId=null;
+function missionDragStart(event,id){
+  draggedMissionId=id; event.dataTransfer.effectAllowed='move'; event.dataTransfer.setData('text/plain',id);
+  setTimeout(()=>event.target.closest('.mission')?.classList.add('dragging'),0);
+}
+function missionDragOver(event){event.preventDefault();event.dataTransfer.dropEffect='move';event.currentTarget.classList.add('drag-over');}
+function missionDragEnd(){document.querySelectorAll('.mission').forEach(el=>el.classList.remove('dragging','drag-over'));draggedMissionId=null;}
+function missionDrop(event,targetId){
+  event.preventDefault();event.currentTarget.classList.remove('drag-over');
+  const sourceId=draggedMissionId||event.dataTransfer.getData('text/plain'); if(!sourceId||sourceId===targetId)return missionDragEnd();
+  const day=missions.filter(m=>m.date===selectedDate).sort((a,b)=>(Number(a.boardOrder)||0)-(Number(b.boardOrder)||0)||(a.time||'').localeCompare(b.time||''));
+  const from=day.findIndex(m=>m.id===sourceId),to=day.findIndex(m=>m.id===targetId);if(from<0||to<0)return missionDragEnd();
+  const [moved]=day.splice(from,1);day.splice(to,0,moved);day.forEach((m,i)=>m.boardOrder=i+1);
+  saveAll();missionDragEnd();renderDaily();toast('🏎️ Mission moved into position!');
+}
+
+function toggleMissionMultiSelect(){
+  missionMultiSelect=!missionMultiSelect;if(!missionMultiSelect)selectedMissionIds.clear();renderDaily();
+}
+function toggleMissionSelection(id,checked){
+  if(checked)selectedMissionIds.add(id);else selectedMissionIds.delete(id);updateMultiSelectButtons();
+}
+function updateMultiSelectButtons(){
+  const selectBtn=document.getElementById('multiSelectBtn'),deleteBtn=document.getElementById('deleteSelectedBtn');
+  if(selectBtn)selectBtn.textContent=missionMultiSelect?'✕ Cancel selection':'☑ Select missions';
+  if(deleteBtn){deleteBtn.style.display=missionMultiSelect?'inline-block':'none';deleteBtn.textContent=`🗑️ Delete selected (${selectedMissionIds.size})`;deleteBtn.disabled=selectedMissionIds.size===0;}
+}
+function deleteSelectedMissions(){
+  if(!selectedMissionIds.size)return;
+  if(!confirm(`Delete ${selectedMissionIds.size} selected mission${selectedMissionIds.size===1?'':'s'} from this day?`))return;
+  missions.filter(m=>selectedMissionIds.has(m.id)).forEach(m=>{
+    if(m.templateId){skippedDailyMissions[m.date]=skippedDailyMissions[m.date]||[];if(!skippedDailyMissions[m.date].includes(m.templateId))skippedDailyMissions[m.date].push(m.templateId);}
+  });
+  missions=missions.filter(m=>!selectedMissionIds.has(m.id));selectedMissionIds.clear();missionMultiSelect=false;saveAll();renderDaily();renderWeek();renderSubjects();toast('🗑️ Selected missions removed from this day');
+}
+
+function changeMissionSubject(missionId, newSubjectId){
+  let m = missions.find(x => x.id === missionId);
+  if(!m) return;
+  m.subject = newSubjectId;
+  saveAll();
+  renderDaily();
+  renderWeek();
+  renderSubjects();
+  toast(`Moved to ${subjectLabel(newSubjectId)}`);
+}
+
+function deleteMission(missionId){
+  const mission=missions.find(x=>x.id===missionId);
+  if(mission?.templateId){
+    const template=dailyTemplates.find(t=>t.id===mission.templateId);
+    if(template?.builtIn){
+      if(!confirm('Remove this mission from this day only? It will return tomorrow as a fresh 15 XP mission.'))return;
+      skippedDailyMissions[mission.date]=skippedDailyMissions[mission.date]||[];
+      if(!skippedDailyMissions[mission.date].includes(mission.templateId))skippedDailyMissions[mission.date].push(mission.templateId);
+    }else{
+      const removeSeries=confirm('This is a custom daily mission. Click OK to stop the series, or Cancel to keep it.');
+      if(!removeSeries)return;
+      dailyTemplates=dailyTemplates.filter(t=>t.id!==mission.templateId);
+      if(!deletedDailyTemplateIds.includes(mission.templateId))deletedDailyTemplateIds.push(mission.templateId);
+    }
+  }
+  missions = missions.filter(x => x.id !== missionId);
+  saveAll();
+  renderDaily();
+  renderWeek();
+  renderSubjects();
+  toast('Mission removed');
+}
+
+function renderDaily(){
+  ensureDailyMissions(selectedDate);
+  saveAll();
+  const list = document.getElementById('missionList');
+  const filterBar = document.getElementById('boardFilterBar');
+  const allDayMissions = dateMissions().sort((a,b)=>(Number(a.boardOrder)??0)-(Number(b.boardOrder)??0)||(a.time||'').localeCompare(b.time||''));
+
+  // Build Subject/Area filter & quick-access bar on the Mission Board
+  const countsBySub = {};
+  allDayMissions.forEach(m => { countsBySub[m.subject] = (countsBySub[m.subject]||0) + 1; });
+
+  if(boardSubjectFilter !== 'all' && !subjects.some(s=>s.id===boardSubjectFilter) && !countsBySub[boardSubjectFilter]){
+    boardSubjectFilter = 'all';
+  }
+
+  let filterHtml = `<span class="filter-label">Subject / Area:</span>`;
+  filterHtml += `<button class="chip ${boardSubjectFilter==='all'?'active':''}" onclick="setBoardFilter('all')">All (${allDayMissions.length})</button>`;
+  subjects.forEach(s => {
+    const cnt = countsBySub[s.id] || 0;
+    if (cnt > 0 || s.id === 'prayer' || s.id === 'life' || boardSubjectFilter === s.id) {
+      filterHtml += `<button class="chip ${boardSubjectFilter===s.id?'active':''}" onclick="setBoardFilter('${esc(s.id)}')">${esc(s.emoji||'📚')} ${esc(s.name)}${cnt?` (${cnt})`:''}</button>`;
+    }
+  });
+  filterHtml += `<button class="chip add-chip" onclick="openSubject()" title="Add or edit Subjects / Areas">＋ Add / Edit Subject</button>`;
+  filterBar.innerHTML = filterHtml;
+
+  const arr = boardSubjectFilter === 'all'
+    ? allDayMissions
+    : allDayMissions.filter(m => m.subject === boardSubjectFilter);
+
+  if(!arr.length){
+    const subFilterText = boardSubjectFilter === 'all' ? '' : ` for <strong>${esc(subjectLabel(boardSubjectFilter))}</strong>`;
+    list.innerHTML = `<div class="empty">🌱 No missions yet${subFilterText} on this day.<br><br>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button class="primary small" onclick="openMission(${boardSubjectFilter!=='all'?`{subject:'${esc(boardSubjectFilter)}'}`:''})">＋ Add Mission${boardSubjectFilter!=='all'?' to '+esc(subjectName(boardSubjectFilter)):''}</button>
+        <button class="success small" onclick="openMission({subject:'prayer',type:'Prayer Reminder',title:'Prayer on time',minutes:10,xp:15})">🤲 Add Prayer</button>
+      </div>
+    </div>`;
+  } else if (groupBoardBySubject) {
+    // Group missions by Subject / Area
+    const groups = {};
+    arr.forEach(m => {
+      const k = m.subject || 'general';
+      if(!groups[k]) groups[k] = [];
+      groups[k].push(m);
+    });
+    list.innerHTML = Object.keys(groups).map(subId => {
+      const gMissions = groups[subId];
+      const gDone = gMissions.filter(m=>m.done).length;
+      const gPct = Math.round((gDone / gMissions.length) * 100);
+      return `<div class="group-header">
+        <span>${esc(subjectLabel(subId))}</span>
+        <span>${gDone}/${gMissions.length} done (${gPct}%)</span>
+      </div>` + gMissions.map(renderMissionCard).join('');
+    }).join('');
+  } else {
+    list.innerHTML = arr.map(renderMissionCard).join('');
+  }
+
+  let done = allDayMissions.filter(m=>m.done).length,
+      percent = allDayMissions.length ? Math.round(done/allDayMissions.length*100) : 0;
+  document.getElementById('progressText').textContent = percent+'%';
+  document.getElementById('progressBar').style.width = percent+'%';
+  document.getElementById('doneText').textContent = `${done} / ${allDayMissions.length}`;
+  document.getElementById('totalXP').textContent = missions.filter(m=>m.done).reduce((s,m)=>s+(Number(m.xp)||0),0);
+  let xp = Number(document.getElementById('totalXP').textContent),
+      level = Math.floor(xp/100)+1;
+  document.getElementById('levelText').textContent = 'Level '+level;
+  document.getElementById('levelHint').textContent = (100-(xp%100))+' XP to next level';
+  document.getElementById('dailyWin').value = wins[selectedDate]||'';
+  document.getElementById('energyTip').textContent = ({
+    High:'⚡ High energy: try a tricky subject first, then a fun challenge.',
+    Good:'🙂 Good energy: mix one hard task with one easier task.',
+    Low:'😴 Low energy: use short review, flashcards, and breaks.'
+  })[energy[selectedDate]] || 'Pick your energy level. It is okay to adjust the plan.';
+
+  renderDailyWeeklyStats();
+}
+
+function renderDailyWeeklyStats(){
+  const container = document.getElementById('dailyWeeklySubjectStats');
+  if(!container) return;
+  const { week, stats } = getWeeklySubjectStats(selectedDate);
+  const rangeEl = document.getElementById('dailyWeekRangeLabel');
+  if(rangeEl) rangeEl.textContent = `Week of ${week.label} • Progress % & study count`;
+
+  const visibleStats = showAllWeeklySubjects
+    ? stats
+    : stats.filter(st => st.hasActivity);
+
+  if(!visibleStats.length){
+    container.innerHTML = `<div class="empty" style="padding:16px">📅 No subjects studied or scheduled this week yet.<br><span class="muted" style="font-size:12px">Add missions or click "Show all" above to see all subjects.</span></div>`;
+    return;
+  }
+
+  container.innerHTML = visibleStats.map(st => `
+    <div class="weekly-stat-card ${st.studiedCount>0?'studied':''}">
+      <div class="weekly-stat-top">
+        <div class="weekly-stat-name">${esc(st.emoji)} ${esc(st.name)}</div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="count-pill ${st.studiedCount>0?'active':''}">🔁 Studied ${st.studiedCount} ${st.studiedCount===1?'time':'times'}</span>
+          <span class="weekly-stat-pct ${st.progressPct===100?'done':''}">${st.progressPct}%</span>
+        </div>
+      </div>
+      <div class="progress ${st.progressPct===100?'green':''}" style="margin-top:2px"><span style="width:${st.progressPct}%"></span></div>
+      <div class="weekly-stat-meta">
+        <span>✅ ${st.studiedCount} / ${st.denominator} completed this week${st.target>0?` (Goal: ${st.target})`:''}</span>
+        <span>⏱️ ${st.minutesStudied} min studied</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleMission(id){
+  let m=missions.find(x=>x.id===id);
+  if(!m)return;
+  m.done=!m.done;
+  saveAll();
+  renderDaily();
+  renderWeek();
+  renderSubjects();
+  toast(m.done?`⚽ GOAL! Mission complete — +${m.xp||0} Boost XP! 🚀`:'Mission reopened');
+}
+
+function renderSubjectOptions(selectedId){
+  let el=document.getElementById('mSubject');
+  if(!el)return;
+  let current = selectedId || el.value;
+  el.innerHTML = subjects.map(s=>`<option value="${esc(s.id)}">${esc(s.emoji||'📚')} ${esc(s.name)}</option>`).join('');
+  if(current && subjects.some(s=>s.id===current)) el.value=current;
+}
+
+function toggleQuickSubjectBox(){
+  const box = document.getElementById('quickSubjectBox');
+  if(!box) return;
+  box.classList.toggle('show');
+  if(box.classList.contains('show')){
+    document.getElementById('qsName').value = '';
+    document.getElementById('qsEmoji').value = '📌';
+    document.getElementById('qsName').focus();
+  }
+}
+
+function saveQuickSubject(){
+  const nameInput = document.getElementById('qsName');
+  const emojiInput = document.getElementById('qsEmoji');
+  const name = nameInput.value.trim();
+  if(!name){ toast('Please enter a Subject / Area name'); nameInput.focus(); return; }
+  const emoji = emojiInput.value.trim() || '📌';
+  const newId = 's' + Date.now();
+  const newSub = {
+    id: newId,
+    name,
+    emoji,
+    private: false,
+    minutes: 20,
+    weeklyTarget: 0,
+    method: 'Custom study or routine steps.',
+    sources: 'Add notes or links here.',
+    notes: ''
+  };
+  subjects.push(newSub);
+  saveAll();
+  renderSubjectOptions(newId);
+  renderSubjects();
+  renderDaily();
+  renderWeek();
+  document.getElementById('quickSubjectBox').classList.remove('show');
+  toast(`Added "${emoji} ${name}" to Subject / Area! ✨`);
+}
+
+function editSelectedSubjectFromMission(){
+  const subId = document.getElementById('mSubject').value;
+  if(!subId) return;
+  openSubject(subId);
+}
+function openSubjectFromMission(){
+  document.getElementById('quickSubjectBox').classList.remove('show');
+  openSubject('');
+}
+
+function openMission(preset={}){
+  document.getElementById('missionForm').reset();
+  document.getElementById('quickSubjectBox').classList.remove('show');
+  document.getElementById('missionId').value='';
+  document.getElementById('missionModalTitle').textContent='✨ Add a mission';
+  document.getElementById('mMinutes').value=preset.minutes||20;
+  document.getElementById('mXP').value=preset.xp??15;
+  document.getElementById('mType').value=preset.type||'Study / Revision';
+  if(preset.title) document.getElementById('mTitle').value=preset.title;
+  document.getElementById('mDaily').checked=!!preset.daily;
+  renderSubjectOptions(preset.subject);
+  if(preset.subject) document.getElementById('mSubject').value=preset.subject;
+  document.getElementById('missionModal').classList.add('show');
+}
+function editMission(id){
+  let m=missions.find(x=>x.id===id);
+  if(!m)return;
+  openMission();
+  document.getElementById('missionModalTitle').textContent='✏️ Edit mission';
+  document.getElementById('missionId').value=id;
+  document.getElementById('mTitle').value=m.title;
+  renderSubjectOptions(m.subject);
+  document.getElementById('mSubject').value=m.subject;
+  document.getElementById('mType').value=m.type;
+  document.getElementById('mTime').value=m.time||'';
+  document.getElementById('mMinutes').value=m.minutes||20;
+  document.getElementById('mXP').value=m.xp||0;
+  document.getElementById('mNotes').value=m.notes||'';
+  document.getElementById('mDaily').checked=!!m.daily;
+}
+function saveMission(e){
+  e.preventDefault();
+  let id=document.getElementById('missionId').value;
+  let previous=id ? missions.find(m=>m.id===id) : null;
+  let obj={
+    id:id||('m'+Date.now()),
+    date:selectedDate,
+    title:document.getElementById('mTitle').value.trim(),
+    subject:document.getElementById('mSubject').value,
+    type:document.getElementById('mType').value,
+    time:document.getElementById('mTime').value.trim(),
+    minutes:Number(document.getElementById('mMinutes').value)||20,
+    xp:Number(document.getElementById('mXP').value)||0,
+    notes:document.getElementById('mNotes').value.trim(),
+    daily:document.getElementById('mDaily').checked,
+    done:false
+  };
+  if(id){
+    let old=missions.find(m=>m.id===id);
+    obj.done=old?.done||false;
+    obj.date=old?.date||selectedDate;
+    obj.templateId=old?.templateId||null;
+    missions=missions.map(m=>m.id===id?obj:m);
+  } else {
+    missions.push(obj);
+  }
+  if(obj.daily){
+    const templateId=obj.templateId||('daily-'+Date.now());
+    obj.templateId=templateId;
+    const existingTemplate=dailyTemplates.find(t=>t.id===templateId);
+    const template={id:templateId,title:obj.title,subject:obj.subject,type:obj.type,time:obj.time,minutes:obj.minutes,xp:existingTemplate?.builtIn?15:obj.xp,notes:obj.notes};
+    const ti=dailyTemplates.findIndex(t=>t.id===templateId);
+    if(ti>=0) dailyTemplates[ti]={...dailyTemplates[ti],...template}; else dailyTemplates.push(template);
+  } else if(id){
+    if(previous?.templateId && !dailyTemplates.find(t=>t.id===previous.templateId)?.builtIn) dailyTemplates=dailyTemplates.filter(t=>t.id!==previous.templateId);
+    obj.templateId=null;
+  }
+  saveAll();
+  closeModal('missionModal');
+  renderDaily();
+  renderWeek();
+  renderSubjects();
+  toast('Mission saved! 🚀');
+}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function setEnergy(v){energy[selectedDate]=v;saveAll();renderDaily();toast('Energy updated 💛')}
+function saveWin(){wins[selectedDate]=document.getElementById('dailyWin').value.trim();saveAll();renderWins();toast('Your accomplishment is saved ✨')}
+function addReflectionPrompt(){let prompts=['Today I learned…','One thing I found easier was…','I am proud that I…','A challenge I tried was…','Tomorrow I want to improve…'];let box=document.getElementById('dailyWin');box.value+=(box.value?'\n':'')+prompts[Math.floor(Math.random()*prompts.length)]+' ';box.focus()}
+
+function subjectStatusLabel(value){
+  value=Number(value);
+  if(value>=90) return '✅ Up to date ('+value+'%)';
+  if(value>=65) return '🟢 Almost there ('+value+'%)';
+  if(value>=40) return '🟡 In progress ('+value+'%)';
+  return '🔴 Behind ('+value+'%)';
+}
+function setSubjectStatus(subjectId,value){
+  manualSubjectStatus[subjectId]=Number(value);
+  saveAll();
+  renderSubjectPrioritySummary();
+  const label=document.getElementById('statusLabel-'+subjectId);
+  if(label){
+    label.textContent=subjectStatusLabel(value);
+    label.style.color=Number(value)>=75?'var(--green)':Number(value)<40?'#dc2626':'#b45309';
+  }
+}
+
+function renderSubjectPrioritySummary(){
+  const box=document.getElementById('subjectPrioritySummary');
+  if(!box)return;
+  // Prayer, Life & Wellbeing and the optional Programming quest are areas/extras, not school subjects.
+  const nonSchoolIds=['prayer','life','programming'];
+  const schoolSubjects=subjects.filter(s=>!nonSchoolIds.includes(s.id));
+  const needsPriority=schoolSubjects.filter(s=>Number(manualSubjectStatus[s.id]??50)<90)
+    .sort((a,b)=>Number(manualSubjectStatus[a.id]??50)-Number(manualSubjectStatus[b.id]??50));
+  const heroes=schoolSubjects.filter(s=>Number(manualSubjectStatus[s.id]??50)>=90)
+    .sort((a,b)=>Number(manualSubjectStatus[b.id]??50)-Number(manualSubjectStatus[a.id]??50));
+  const heroHtml=heroes.length ? `<div style="margin-top:16px;padding-top:14px;border-top:2px dashed #ddd6fe">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <div><div class="eyebrow" style="color:#7c3aed">🏟️ TURBO HERO GARAGE</div><h2 style="margin:3px 0">Mozi's All-Star MVP Team 🚗⚽</h2></div>
+      <span class="pill" style="background:#fef3c7;color:#92400e">🔥 ${heroes.length} turbo hero${heroes.length===1?'':'es'} unlocked</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px">${heroes.map((s,i)=>{
+      const score=Number(manualSubjectStatus[s.id]??50),mvp=score===100;
+      const ranks=['🚀 Aerial Ace','⚡ Turbo Striker','🛡️ Tactical Guardian','🎯 Precision MVP','🔥 Clutch Champion','🏎️ Boost Commander','⚽ Arena Playmaker','💎 Elite Scholar'];
+      const badges=['🏅 Hat-Trick Learner','🎖️ Squad MVP','👑 Crown Collector','💥 Power Play Pro','🌟 Unstoppable Streak','🧠 Strategy Master','🔷 Diamond Division','🏆 Victory Specialist'];
+      const cheers=['Stay boosted—your next goal is waiting!','Calm focus. Smart move. Big win.','You owned this round, Mozi!','Champions reset, refocus, and score again.','Your study squad can count on you!','One more mission, one more highlight play.','Fast mind, strong plan, clean finish.','You turned practice into MVP performance!'];
+      const styleIndex=(s.id.split('').reduce((n,c)=>n+c.charCodeAt(0),0)+new Date().getDate())%ranks.length;
+      return `<div style="position:relative;overflow:hidden;padding:14px;text-align:center;border-radius:16px;border:2px solid ${mvp?'#f59e0b':'#8b5cf6'};background:${mvp?'linear-gradient(145deg,#fff7cc,#ffedd5)':'linear-gradient(145deg,#f5f3ff,#ede9fe)'};box-shadow:0 6px 14px rgba(91,33,182,.12)">
+        <div style="position:absolute;right:6px;top:4px;font-size:11px;font-weight:900;color:${mvp?'#92400e':'#6d28d9'}">${mvp?'MVP 👑':'ALL-STAR'} • ${badges[styleIndex]}</div>
+        <div style="font-size:34px;margin:4px">${esc(s.emoji||'📚')}</div><strong style="display:block;font-size:15px">${esc(s.name)}</strong>
+        <div style="font-size:12px;font-weight:900;color:${mvp?'#b45309':'#7c3aed'};margin-top:5px">${mvp?'🏆 SUPERSONIC LEGEND':ranks[styleIndex]} • ${score}%</div>
+        <div style="margin-top:7px;font-size:11px;color:var(--muted)">${i===0?'🥇 Match MVP • Team Captain':badges[(styleIndex+3)%badges.length]}<br><em style="display:block;margin-top:5px">“${cheers[styleIndex]}”</em></div>
+      </div>`;
+    }).join('')}</div>
+  </div>` : '';
+  if(needsPriority.length){
+    box.innerHTML=`<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+      <div><div class="eyebrow" style="color:var(--purple)">🎯 SCHOOL PRIORITY</div><h2 style="margin:3px 0">${needsPriority.length} school subject${needsPriority.length===1?'':'s'} not up to date</h2><p>Give priority to the lowest status first.</p></div>
+      <div style="font-size:30px;font-weight:900;color:#b45309">${needsPriority.length}</div>
+    </div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:11px">${needsPriority.map(s=>`<button class="chip" onclick="document.getElementById('statusLabel-${esc(s.id)}')?.scrollIntoView({behavior:'smooth',block:'center'})">${esc(s.emoji||'📚')} ${esc(s.name)} • ${manualSubjectStatus[s.id]??50}%</button>`).join('')}</div>${heroHtml}`;
+  }else{
+    const quotes=[
+      'Mozi, you did it! Small steps every day create amazing results. 🌟',
+      'Great work, Mozi! Be proud of your effort—your consistency is your superpower. 🚀',
+      'Mozi, every finished subject proves that you can do hard things. Keep shining! ✨',
+      'Final whistle: perfect teamwork between focus and effort. Victory secured! ⚽🏆',
+      'Supersonic study mode complete—Mozi owns the arena today! 🚗💨',
+      'Mission cleared. Squad MVP earned. Time for a champion celebration! 🎮🥇',
+      'Clutch finish, smart strategy, zero subjects left behind! 🎯🔥',
+      'Boost full. Goals scored. School league conquered! 🚀⚽'
+    ];
+    const quote=quotes[new Date().getDate()%quotes.length];
+    box.innerHTML=`<div style="text-align:center;padding:10px"><div style="font-size:38px">🏆</div><h2 style="color:var(--green);margin:5px 0">All school subjects are up to date!</h2><p style="font-size:16px;font-weight:800;color:var(--purple)">“${quote}”</p></div>${heroHtml}`;
+  }
+}
+
+let draggedSubjectId=null;
+function subjectDragStart(event,id){
+  draggedSubjectId=id;event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',id);
+  setTimeout(()=>document.querySelector(`[data-subject-id="${id}"]`)?.classList.add('subject-dragging'),0);
+}
+function subjectDragOver(event){event.preventDefault();event.dataTransfer.dropEffect='move';event.currentTarget.classList.add('subject-drag-over');}
+function subjectDragEnd(){document.querySelectorAll('.subject-card').forEach(el=>el.classList.remove('subject-dragging','subject-drag-over'));draggedSubjectId=null;}
+function subjectDrop(event,targetId){
+  event.preventDefault();const sourceId=draggedSubjectId||event.dataTransfer.getData('text/plain');
+  if(!sourceId||sourceId===targetId)return subjectDragEnd();
+  const from=subjects.findIndex(s=>s.id===sourceId),to=subjects.findIndex(s=>s.id===targetId);if(from<0||to<0)return subjectDragEnd();
+  const [moved]=subjects.splice(from,1);subjects.splice(to,0,moved);saveAll();subjectDragEnd();renderSubjects();renderSubjectOptions();renderDaily();toast('📚 Subject order saved!');
+}
+
+function renderSubjects(){
+  let grid=document.getElementById('subjectGrid');
+  if(!grid) return;
+  renderSubjectPrioritySummary();
+  const { week, stats } = getWeeklySubjectStats(selectedDate);
+  const statMap = {};
+  stats.forEach(st => { statMap[st.id] = st; });
+
+  grid.innerHTML=subjects.map(s=>{
+    const st = statMap[s.id] || { studiedCount:0, plannedCount:0, denominator:0, progressPct:0, minutesStudied:0, statusPct:100, behindCount:0, isUpToDate:true };
+    return `<article class="subject-card" data-subject-id="${s.id}" ondragover="subjectDragOver(event)" ondragleave="event.currentTarget.classList.remove('subject-drag-over')" ondrop="subjectDrop(event,'${s.id}')">
+      <div class="subject-top">
+        <div class="subject-icon">${esc(s.emoji||'📚')}</div>
+        <div style="flex:1">
+          <h3>${esc(s.name)}</h3>
+          <p>${s.private?'👨‍🏫 Private lesson':'📘 Self-study / routine'} • ${s.minutes||20} min</p>
+        </div>
+        <span class="subject-drag-handle" draggable="true" ondragstart="subjectDragStart(event,'${s.id}')" ondragend="subjectDragEnd()" title="Drag to reorder subjects">⠿ Drag</span>
+      </div>
+      <div class="subject-week-box">
+        <div style="padding:9px 10px;background:#fff;border:1px solid #e8e2ff;border-radius:12px;margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-weight:900;margin-bottom:5px">
+            <span>🎚️ My status</span>
+            <span id="statusLabel-${esc(s.id)}" style="color:${(manualSubjectStatus[s.id]??50)>=75?'var(--green)':(manualSubjectStatus[s.id]??50)<40?'#dc2626':'#b45309'}">${subjectStatusLabel(manualSubjectStatus[s.id]??50)}</span>
+          </div>
+          <input type="range" min="0" max="100" step="5" value="${manualSubjectStatus[s.id]??50}" oninput="setSubjectStatus('${esc(s.id)}',this.value)" style="width:100%;accent-color:var(--purple);cursor:pointer" aria-label="Manual status for ${esc(s.name)}">
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:800"><span>Behind</span><span>In progress</span><span>Up to date</span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <strong>📊 Weekly Progress (${esc(week.label)})</strong>
+          <span style="font-weight:900;color:${st.progressPct===100?'var(--green)':'var(--purple)'}">${st.progressPct}%</span>
+        </div>
+        <div class="progress ${st.progressPct===100?'green':''}" style="margin:4px 0 6px"><span style="width:${st.progressPct}%"></span></div>
+        <div style="display:flex;justify-content:space-between;color:var(--muted)">
+          <span>🔁 Studied <strong>${st.studiedCount}</strong> ${st.studiedCount===1?'time':'times'} (${st.studiedCount}/${st.denominator} done)</span>
+          <span>⏱️ ${st.minutesStudied}m</span>
+        </div>
+      </div>
+      <div class="mini"><strong>🧠 Study / practice method</strong><br>${esc(s.method||'Add your preferred study method.')}</div>
+      <div class="mini"><strong>🔗 Sources</strong><br>${esc(s.sources||'Add trusted sources and teacher links.')}</div>
+      ${s.notes?`<div class="mini"><strong>💡 Note</strong><br>${esc(s.notes)}</div>`:''}
+      <div class="actions">
+        <button class="soft small" onclick="openSubject('${s.id}')">✏️ Edit</button>
+        <button class="primary small" onclick="addStudyMission('${s.id}')">＋ Add mission</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function openSubject(id=''){
+  let s=subjects.find(x=>x.id===id);
+  document.getElementById('subjectForm').reset();
+  document.getElementById('sId').value=s?.id||'';
+  document.getElementById('subjectModalTitle').textContent=s?'✏️ Edit Subject / Area':'📚 Add Subject / Area';
+  document.getElementById('deleteSubjectBtn').style.visibility=s?'visible':'hidden';
+  document.getElementById('sName').value=s?.name||'';
+  document.getElementById('sEmoji').value=s?.emoji||'📚';
+  document.getElementById('sPrivate').value=s?.private?'yes':'no';
+  document.getElementById('sMinutes').value=s?.minutes||20;
+  document.getElementById('sWeeklyTarget').value=s?.weeklyTarget||0;
+  document.getElementById('sMethod').value=s?.method||'';
+  document.getElementById('sSources').value=s?.sources||'';
+  document.getElementById('sNotes').value=s?.notes||'';
+  document.getElementById('subjectModal').classList.add('show');
+}
+
+function saveSubject(e){
+  e.preventDefault();
+  let id=document.getElementById('sId').value;
+  let newId = id || ('s'+Date.now());
+  let obj={
+    id:newId,
+    name:document.getElementById('sName').value.trim(),
+    emoji:document.getElementById('sEmoji').value.trim()||'📚',
+    private:document.getElementById('sPrivate').value==='yes',
+    minutes:Number(document.getElementById('sMinutes').value)||20,
+    weeklyTarget:Number(document.getElementById('sWeeklyTarget').value)||0,
+    method:document.getElementById('sMethod').value.trim(),
+    sources:document.getElementById('sSources').value.trim(),
+    notes:document.getElementById('sNotes').value.trim()
+  };
+  if(id) subjects=subjects.map(s=>s.id===id?obj:s);
+  else subjects.push(obj);
+  saveAll();
+  renderSubjectOptions(newId);
+  renderSubjects();
+  renderDaily();
+  renderWeek();
+  closeModal('subjectModal');
+  toast('Subject / Area updated 📚');
+}
+
+function deleteSubject(){
+  let id=document.getElementById('sId').value;
+  if(!id)return;
+  if(!confirm('Delete this Subject / Area from your map? Existing missions will remain.'))return;
+  if(!deletedDefaultIds.includes(id)) deletedDefaultIds.push(id);
+  subjects=subjects.filter(s=>s.id!==id);
+  saveAll();
+  renderSubjectOptions();
+  renderSubjects();
+  renderDaily();
+  renderWeek();
+  closeModal('subjectModal');
+  toast('Subject / Area deleted');
+}
+
+function addStudyMission(id){
+  let s=subjects.find(x=>x.id===id);
+  if(!s)return;
+  let defaultType = id==='prayer' ? 'Prayer Reminder' : (id==='life' ? 'Life Skill' : 'Study / Revision');
+  openMission({subject:id,type:defaultType,minutes:s.minutes,xp:15});
+  document.getElementById('mTitle').value=(id==='prayer'?'Prayer: ':'Review: ')+s.name;
+  document.getElementById('mNotes').value=s.method ? ('Method: '+s.method) : '';
+}
+
+function renderWeek(){
+  let el=document.getElementById('weekGrid');
+  if(!el)return;
+  const { week, stats } = getWeeklySubjectStats(selectedDate);
+  const subTitle = document.getElementById('weekSummarySubtitle');
+  if(subTitle) subTitle.textContent = `Week of ${week.label} • See progress % and how many times each subject is studied this week.`;
+
+  const weekSubGrid = document.getElementById('weeklySubjectGrid');
+  if(weekSubGrid){
+    weekSubGrid.innerHTML = stats.map(st => `
+      <div class="weekly-stat-card ${st.studiedCount>0?'studied':''}">
+        <div class="weekly-stat-top">
+          <div class="weekly-stat-name">${esc(st.emoji)} ${esc(st.name)}</div>
+          <span class="weekly-stat-pct ${st.progressPct===100?'done':''}">${st.progressPct}%</span>
+        </div>
+        <div class="progress ${st.progressPct===100?'green':''}"><span style="width:${st.progressPct}%"></span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px">
+          <span class="count-pill ${st.studiedCount>0?'active':''}">🔁 Studied ${st.studiedCount} ${st.studiedCount===1?'time':'times'}</span>
+          <span class="muted" style="font-size:11px">${st.studiedCount}/${st.denominator} missions • ${st.minutesStudied}m</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  let out='';
+  for(let i=0;i<7;i++){
+    let key = week.days[i];
+    let x = new Date(key+'T12:00:00');
+    let arr = missions.filter(m=>m.date===key),
+        lessons = arr.filter(m=>m.type==='Private Lesson'),
+        hw = arr.filter(m=>m.type!=='Private Lesson'),
+        done = arr.filter(m=>m.done).length,
+        dayPct = arr.length ? Math.round(done/arr.length*100) : 0;
+    out += `<div class="week-row">
+      <div>
+        <strong>${x.toLocaleDateString('en-GB',{weekday:'short'})}</strong><br>
+        <span class="muted" style="font-size:12px">${key.slice(5)}</span><br>
+        <button class="soft small" style="margin-top:6px" onclick="selectWeekDay('${key}')">Open day</button>
+      </div>
+      <div>
+        <strong>📌 Missions &amp; Homework (by Subject/Area)</strong>
+        <div class="muted" style="font-size:12px;margin-top:4px">
+          ${hw.length ? hw.map(m=>`<div style="margin-bottom:4px">${m.done?'✅':'⬜'} <span class="subject-badge ${subjectBadgeClass(m.subject)}" style="padding:2px 6px;font-size:11px">${esc(subjectLabel(m.subject))}</span> <strong>${esc(m.title)}</strong></div>`).join('') : '—'}
+        </div>
+      </div>
+      <div>
+        <strong>👨‍🏫 Lessons &amp; Daily Progress</strong>
+        <div class="muted" style="font-size:12px;margin-top:4px">
+          ${lessons.length ? lessons.map(m=>`<div style="margin-bottom:4px">🕒 ${esc((m.time?m.time+' · ':'')+subjectLabel(m.subject)+' — '+m.title)}</div>`).join('') : 'No private lesson slot'}
+          <div style="margin-top:6px;font-weight:700;color:var(--ink)">✅ ${done}/${arr.length} missions (${dayPct}%)</div>
+        </div>
+      </div>
+    </div>`;
+  }
+  el.innerHTML=out;
+}
+
+function selectWeekDay(key){selectedDate=key;document.getElementById('selectedDate').value=key;switchView('daily');renderDaily()}
+function renderWins(){let el=document.getElementById('winsList');if(!el)return;let keys=Object.keys(wins).filter(k=>wins[k]).sort().reverse();el.innerHTML=keys.length?keys.map(k=>`<div class="mission"><div>🌟</div><div><strong>${esc(k)}</strong><div>${esc(wins[k]).replace(/\n/g,'<br>')}</div></div><button class="soft small" onclick="editWin('${k}')">✏️ Edit</button></div>`).join(''):'<div class="empty">Your wins will appear here. Save one small accomplishment each day. 🌱</div>'}
+function editWin(k){selectedDate=k;document.getElementById('selectedDate').value=k;switchView('daily');renderDaily();document.getElementById('dailyWin').focus()}
+function clearWins(){if(!confirm('Clear all accomplishment notes?'))return;wins={};saveAll();renderWins();renderDaily()}
+function saveSettings(){settings={childName:document.getElementById('childName').value,grade:document.getElementById('grade').value,xpGoal:Number(document.getElementById('xpGoal').value)||100,weeklyGoal:Number(document.getElementById('weeklyGoal').value)||400,rewardText:document.getElementById('rewardText').value};saveAll();applySettings();toast('Settings saved 💜')}
+function applySettings(){document.getElementById('childName').value=settings.childName||'';document.getElementById('grade').value=settings.grade||'Prep 1';document.getElementById('xpGoal').value=settings.xpGoal||100;document.getElementById('weeklyGoal').value=settings.weeklyGoal||400;document.getElementById('rewardText').value=settings.rewardText||'';document.querySelector('.hero h1').textContent='🏆🥇🎮 Study Champions League'+(settings.childName?' • '+settings.childName:'')}
+function printDaily(){switchView('daily');window.print()}
+function exportData(){
+  let data={version:3,exportedAt:new Date().toISOString(),subjects,deletedDefaultIds,missions,dailyTemplates,deletedDailyTemplateIds,skippedDailyMissions,wins,settings,energy,manualSubjectStatus};
+  let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='study-quest-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);
+  localStorage.setItem('sq_last_backup',Date.now());toast('Complete backup downloaded ⬇');
+}
+function checkBackupReminder(){
+  const last=Number(localStorage.getItem('sq_last_backup')||0), week=7*24*60*60*1000;
+  if(Date.now()-last>=week && confirm('Data safety reminder: download a complete Study Quest backup now?')) exportData();
+}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(d.subjects)subjects=d.subjects;if(d.deletedDefaultIds)deletedDefaultIds=d.deletedDefaultIds;if(d.missions)missions=d.missions;if(d.wins)wins=d.wins;if(d.settings)settings=d.settings;if(d.energy)energy=d.energy;if(d.dailyTemplates)dailyTemplates=d.dailyTemplates;if(d.deletedDailyTemplateIds)deletedDailyTemplateIds=d.deletedDailyTemplateIds;if(d.skippedDailyMissions)skippedDailyMissions=d.skippedDailyMissions;if(d.manualSubjectStatus)manualSubjectStatus=d.manualSubjectStatus;saveAll();applySettings();renderSubjectOptions();renderDaily();renderSubjects();renderWeek();renderWins();toast('Backup restored!')}catch(err){toast('Could not read this backup file.')}e.target.value=''};r.readAsText(f)}
+function resetApp(){if(!confirm('This will delete all Study Quest data saved in this browser. Download a backup first if needed. Continue?'))return;['sq_subjects','sq_deleted_defaults','sq_missions','sq_wins','sq_settings','sq_energy','sq_daily_templates','sq_deleted_daily_templates','sq_skipped_daily_missions','sq_subject_status','sq_last_backup'].forEach(k=>localStorage.removeItem(k));location.reload()}
+init();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4476902487de193',t:'MTc5MDk4MjkzNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
