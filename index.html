@@ -261,893 +261,551 @@ button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-
 </div></div>
 <div class="toast" id="toast"></div>
 
-<script>
-const defaultSubjects = [
-{id:'prayer',name:'Prayer',emoji:'🤲',private:false,minutes:10,weeklyTarget:0,method:'Perform daily prayers on time with focus and calmness (Fajr, Dhuhr, Asr, Maghrib, Isha).',sources:'Daily prayer schedule & calm family reminder.',notes:'A peaceful spiritual habit and daily anchor—not a competition.'},
-{id:'life',name:'Life & Wellbeing',emoji:'🌟',private:false,minutes:15,weeklyTarget:0,method:'Tidy room, prepare school bag, help family, move your body, and get good rest.',sources:'Daily home routine & healthy habits.',notes:'Keep tasks kind, realistic, and supportive.'},
-{id:'library',name:'Library',emoji:'📚',private:false,minutes:20,weeklyTarget:0,method:'Choose a suitable book, read one focused section, note a new word or interesting idea, then give a short summary in your own words.',sources:'School library, home books, reading list, librarian or teacher recommendations.',notes:'Reading for enjoyment counts too. Record the book title and pages read.'},
-{id:'arabic',name:'Arabic',emoji:'🇪🇬',private:true,minutes:20,weeklyTarget:0,method:'After the private lesson: review the teacher notes, finish homework, practise grammar and reading, then add mistakes to a small Mistake Book.',sources:'School book + private teacher notes + assigned homework. Add teacher-approved practice links here.',notes:'Keep the teacher’s plan as the main guide.'},
-{id:'english',name:'English',emoji:'🇬🇧',private:true,minutes:15,weeklyTarget:0,method:'Learn 5 words, listen and repeat, practise one grammar point, then write your own sentence. Use short quizzes and fun challenges.',sources:'School book + private teacher notes. Optional: British Council LearnEnglish Teens — https://learnenglishteens.britishcouncil.org/',notes:'Use English as a confidence-building subject.'},
-{id:'math',name:'Math',emoji:'➗',private:true,minutes:20,weeklyTarget:0,method:'Warm-up → solve practice questions → find the mistake → try one challenge question. Focus on accuracy, not repeating easy questions.',sources:'School book + private teacher notes + assigned worksheets.',notes:'Offer optional Genius / Boss challenges when school work is done.'},
-{id:'science',name:'Science',emoji:'🔬',private:false,minutes:20,weeklyTarget:0,method:'1) Explain the idea in 3–5 simple sentences. 2) Draw a diagram or watch a short lesson. 3) Explain it in your own words. 4) Solve 5 questions.',sources:'School book and teacher notes first. Add a specific lesson video or official learning resource here: __________________',notes:'Make hard ideas visual. Split long lessons into small parts.'},
-{id:'social',name:'Social Studies',emoji:'🌍',private:false,minutes:15,weeklyTarget:0,method:'Turn geography into map missions and history into a story/timeline. Learn a small section, use flashcards, then answer questions without looking.',sources:'School book + teacher notes. Use a map/timeline and add a teacher-approved video link here: __________________',notes:'Start with the easiest or most interesting section to build confidence.'},
-{id:'ict',name:'ICT',emoji:'💻',private:false,minutes:20,weeklyTarget:0,method:'Learn by doing: read/watch a short explanation, complete one practical task, then explain what you did.',sources:'School/teacher instructions if provided. Add class notes, links, or required topics here. No school book noted.',notes:'Keep tasks practical and safe online.'},
-{id:'skills',name:'Skills & Fields',emoji:'🛠️',private:false,minutes:15,weeklyTarget:0,method:'Make a mini project: read the task, list the steps, do it, and show the result. Practise planning, creativity, and problem solving.',sources:'Teacher instructions, worksheets, or class notes. No school book noted.',notes:'Customize the name and tasks to match the exact school subject.'},
-{id:'religion',name:'Religion',emoji:'🕌',private:false,minutes:10,weeklyTarget:0,method:'Understand the meaning, learn a small section, review yesterday’s part, then answer 3 questions. Use short, regular revision.',sources:'School book + teacher notes + assigned memorization.',notes:'Keep it meaningful and calm; not a competition.'},
-{id:'sketch',name:'Sketch / Art',emoji:'🎨',private:false,minutes:20,weeklyTarget:0,method:'Prepare materials, follow the assignment steps, then add one creative detail. Take a photo of the finished work if useful.',sources:'Teacher instructions, class examples, and drawing materials.',notes:'Creative time can also be a relaxing break.'},
-{id:'french',name:'French',emoji:'🇫🇷',private:false,minutes:10,weeklyTarget:0,method:'Learn 5 words, listen and repeat pronunciation, match words to meanings, then answer a tiny quiz or make one sentence.',sources:'School book + teacher notes. Optional: TV5MONDE Apprendre — https://apprendre.tv5monde.com/',notes:'Short, frequent practice is better than a long cram session.'},
-{id:'programming',name:'Programming (Extra Quest)',emoji:'👨‍💻',private:false,minutes:25,weeklyTarget:0,method:'Choose one small project, build a tiny part, test it, and write what you learned. Ask for hints before asking for a full solution.',sources:'Scholarship lessons and instructor resources. Add coding platform/project links here.',notes:'Extra learning should stay fun and should not replace school rest time.'}
-];
+<script type="module">
+  // ====================== FIREBASE ======================
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-let deletedDefaultIds = JSON.parse(localStorage.getItem('sq_deleted_defaults')||'[]');
-let savedSubjects = JSON.parse(localStorage.getItem('sq_subjects')||'null');
-if (savedSubjects) {
-  // Ensure Prayer and Life & Wellbeing are present in existing saved data unless explicitly deleted
-  ['life','prayer','library'].forEach(reqId => {
-    if (!savedSubjects.some(s => s.id === reqId) && !deletedDefaultIds.includes(reqId)) {
-      const def = defaultSubjects.find(d => d.id === reqId);
-      if (def) savedSubjects.unshift({...def});
-    }
-  });
-}
-let subjects = savedSubjects || defaultSubjects.map(d => ({...d}));
-let missions = JSON.parse(localStorage.getItem('sq_missions')||'null') || [];
-let dailyTemplates = JSON.parse(localStorage.getItem('sq_daily_templates')||'null') || [];
-let deletedDailyTemplateIds = JSON.parse(localStorage.getItem('sq_deleted_daily_templates')||'[]');
-let skippedDailyMissions = JSON.parse(localStorage.getItem('sq_skipped_daily_missions')||'{}');
-const prayerTemplates = [
-  {id:'daily-prayer-fajr',title:'Fajr Prayer',time:'',minutes:10},
-  {id:'daily-prayer-dhuhr',title:'Dhuhr Prayer',time:'',minutes:10},
-  {id:'daily-prayer-asr',title:'Asr Prayer',time:'',minutes:10},
-  {id:'daily-prayer-maghrib',title:'Maghrib Prayer',time:'',minutes:10},
-  {id:'daily-prayer-isha',title:'Isha Prayer',time:'',minutes:10}
-];
-prayerTemplates.forEach(p=>{if(!dailyTemplates.some(t=>t.id===p.id))dailyTemplates.push({...p,subject:'prayer',type:'Prayer Reminder',xp:15,notes:'',builtIn:true});});
-const dailySubjectTemplates = [
-  ['life','Life & Wellbeing daily mission','Life Skill'],
-  ['arabic','Arabic daily study','Study / Revision'],
-  ['english','English daily study','Study / Revision'],
-  ['math','Math daily practice','Quiz / Practice'],
-  ['science','Science daily study','Study / Revision'],
-  ['social','Social Studies daily study','Study / Revision'],
-  ['ict','ICT daily mission','Study / Revision'],
-  ['skills','Skills & Fields daily mission','Creative Activity'],
-  ['religion','Religion daily study','Study / Revision'],
-  ['sketch','Sketch / Art daily mission','Creative Activity'],
-  ['french','French daily study','Study / Revision'],
-  ['library','Library daily reading','Study / Revision']
-];
-dailyTemplates.forEach(t=>{if(t.builtIn)t.xp=15;});
-
-dailySubjectTemplates.forEach(([subject,title,type])=>{
-  const id='daily-subject-'+subject;
-  if(!dailyTemplates.some(t=>t.id===id)){
-    const sub=subjects.find(s=>s.id===subject);
-    dailyTemplates.push({id,title,subject,type,time:'',minutes:sub?.minutes||20,xp:15,notes:'',builtIn:true});
-  }
-});
-let wins = JSON.parse(localStorage.getItem('sq_wins')||'{}');
-let settings = JSON.parse(localStorage.getItem('sq_settings')||'{}');
-let energy = JSON.parse(localStorage.getItem('sq_energy')||'{}');
-let manualSubjectStatus = JSON.parse(localStorage.getItem('sq_subject_status')||'{}');
-function cairoToday(){
-  const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Africa/Cairo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
-  const get=type=>parts.find(p=>p.type===type)?.value;
-  return `${get('year')}-${get('month')}-${get('day')}`;
-}
-let selectedDate = cairoToday();
-let boardSubjectFilter = 'all';
-let groupBoardBySubject = false;
-let showAllWeeklySubjects = false;
-let missionMultiSelect = false;
-let selectedMissionIds = new Set();
-
-function saveAll(){
-  localStorage.setItem('sq_subjects',JSON.stringify(subjects));
-  localStorage.setItem('sq_deleted_defaults',JSON.stringify(deletedDefaultIds));
-  localStorage.setItem('sq_missions',JSON.stringify(missions));
-  localStorage.setItem('sq_daily_templates',JSON.stringify(dailyTemplates));
-  localStorage.setItem('sq_deleted_daily_templates',JSON.stringify(deletedDailyTemplateIds));
-  localStorage.setItem('sq_skipped_daily_missions',JSON.stringify(skippedDailyMissions));
-  localStorage.setItem('sq_wins',JSON.stringify(wins));
-  localStorage.setItem('sq_settings',JSON.stringify(settings));
-  localStorage.setItem('sq_energy',JSON.stringify(energy));
-  localStorage.setItem('sq_subject_status',JSON.stringify(manualSubjectStatus));
-}
-function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2300)}
-function ensureDailyMissions(dateStr){
-  dailyTemplates.forEach(t=>{
-    const skipped=(skippedDailyMissions[dateStr]||[]).includes(t.id);
-    if(!skipped && !missions.some(m=>m.date===dateStr && m.templateId===t.id)){
-      missions.push({id:'m'+Date.now()+Math.random().toString(36).slice(2,7),date:dateStr,title:t.title,subject:t.subject,type:t.type,time:t.time||'',minutes:t.minutes||20,xp:t.xp||0,notes:t.notes||'',done:false,templateId:t.id,daily:true});
-    }
-  });
-}
-function dateMissions(){ensureDailyMissions(selectedDate);return missions.filter(m=>m.date===selectedDate)}
-function getSubjectObj(id){
-  let found = subjects.find(s=>s.id===id);
-  if(found) return found;
-  if(id==='prayer') return {id:'prayer',name:'Prayer',emoji:'🤲'};
-  if(id==='life') return {id:'life',name:'Life & Wellbeing',emoji:'🌟'};
-  return {id:id||'general',name:id||'General',emoji:'📌'};
-}
-function subjectName(id){return getSubjectObj(id).name}
-function subjectEmoji(id){return getSubjectObj(id).emoji||'📚'}
-function subjectLabel(id){let s=getSubjectObj(id);return `${s.emoji||'📚'} ${s.name}`}
-function subjectBadgeClass(id){if(id==='prayer')return 'prayer';if(id==='life')return 'life';return ''}
-function typeClass(type){if(type==='School HW')return 'school';if(type==='Private HW')return 'private';if(type==='Private Lesson')return 'lesson';if(['Life Skill','Prayer Reminder','Sport / Movement'].includes(type))return 'life';return ''}
-
-function getWeekBounds(dateStr){
-  let d = new Date(dateStr+'T12:00:00');
-  let day = d.getDay();
-  let monday = new Date(d);
-  monday.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
-  let days = [];
-  for(let i=0;i<7;i++){
-    let x = new Date(monday);
-    x.setDate(monday.getDate()+i);
-    days.push(x.toISOString().slice(0,10));
-  }
-  return {
-    monday,
-    sunday: new Date(days[6]+'T12:00:00'),
-    days,
-    label: `${monday.toLocaleDateString('en-GB',{month:'short',day:'numeric'})} – ${new Date(days[6]+'T12:00:00').toLocaleDateString('en-GB',{month:'short',day:'numeric'})}`
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2kEOnyynJRUcxyoyAyOAvEoYbqUn2P0A",
+    authDomain: "daily-schedule-5fec6.firebaseapp.com",
+    projectId: "daily-schedule-5fec6",
+    storageBucket: "daily-schedule-5fec6.firebasestorage.app",
+    messagingSenderId: "152452635714",
+    appId: "1:152452635714:web:a2f9eeeb77c5476ab0e1db"
   };
-}
 
-function getWeeklySubjectStats(dateStr = selectedDate){
-  const week = getWeekBounds(dateStr);
-  const weekMissions = missions.filter(m => week.days.includes(m.date));
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const dataRef = doc(db, "studyData", "main");
 
-  // Include all defined subjects plus any custom/orphaned subject IDs used in weekMissions
-  const allIds = [...subjects.map(s => s.id)];
-  weekMissions.forEach(m => {
-    if (m.subject && !allIds.includes(m.subject)) allIds.push(m.subject);
-  });
+  // ====================== DEFAULT SUBJECTS ======================
+  const defaultSubjects = [
+    {id:'prayer',name:'Prayer',emoji:'🤲',private:false,minutes:10,weeklyTarget:0,method:'Perform daily prayers on time with focus and calmness (Fajr, Dhuhr, Asr, Maghrib, Isha).',sources:'Daily prayer schedule & calm family reminder.',notes:'A peaceful spiritual habit and daily anchor—not a competition.'},
+    {id:'life',name:'Life & Wellbeing',emoji:'🌟',private:false,minutes:15,weeklyTarget:0,method:'Tidy room, prepare school bag, help family, move your body, and get good rest.',sources:'Daily home routine & healthy habits.',notes:'Keep tasks kind, realistic, and supportive.'},
+    {id:'library',name:'Library',emoji:'📚',private:false,minutes:20,weeklyTarget:0,method:'Choose a suitable book, read one focused section, note a new word or interesting idea, then give a short summary in your own words.',sources:'School library, home books, reading list, librarian or teacher recommendations.',notes:'Reading for enjoyment counts too. Record the book title and pages read.'},
+    {id:'arabic',name:'Arabic',emoji:'🇪🇬',private:true,minutes:20,weeklyTarget:0,method:'After the private lesson: review the teacher notes, finish homework, practise grammar and reading, then add mistakes to a small Mistake Book.',sources:'School book + private teacher notes + assigned homework. Add teacher-approved practice links here.',notes:'Keep the teacher’s plan as the main guide.'},
+    {id:'english',name:'English',emoji:'🇬🇧',private:true,minutes:15,weeklyTarget:0,method:'Learn 5 words, listen and repeat, practise one grammar point, then write your own sentence. Use short quizzes and fun challenges.',sources:'School book + private teacher notes. Optional: British Council LearnEnglish Teens — https://learnenglishteens.britishcouncil.org/',notes:'Use English as a confidence-building subject.'},
+    {id:'math',name:'Math',emoji:'➗',private:true,minutes:20,weeklyTarget:0,method:'Warm-up → solve practice questions → find the mistake → try one challenge question. Focus on accuracy, not repeating easy questions.',sources:'School book + private teacher notes + assigned worksheets.',notes:'Offer optional Genius / Boss challenges when school work is done.'},
+    {id:'science',name:'Science',emoji:'🔬',private:false,minutes:20,weeklyTarget:0,method:'1) Explain the idea in 3–5 simple sentences. 2) Draw a diagram or watch a short lesson. 3) Explain it in your own words. 4) Solve 5 questions.',sources:'School book and teacher notes first. Add a specific lesson video or official learning resource here: __________________',notes:'Make hard ideas visual. Split long lessons into small parts.'},
+    {id:'social',name:'Social Studies',emoji:'🌍',private:false,minutes:15,weeklyTarget:0,method:'Turn geography into map missions and history into a story/timeline. Learn a small section, use flashcards, then answer questions without looking.',sources:'School book + teacher notes. Use a map/timeline and add a teacher-approved video link here: __________________',notes:'Start with the easiest or most interesting section to build confidence.'},
+    {id:'ict',name:'ICT',emoji:'💻',private:false,minutes:20,weeklyTarget:0,method:'Learn by doing: read/watch a short explanation, complete one practical task, then explain what you did.',sources:'School/teacher instructions if provided. Add class notes, links, or required topics here. No school book noted.',notes:'Keep tasks practical and safe online.'},
+    {id:'skills',name:'Skills & Fields',emoji:'🛠️',private:false,minutes:15,weeklyTarget:0,method:'Make a mini project: read the task, list the steps, do it, and show the result. Practise planning, creativity, and problem solving.',sources:'Teacher instructions, worksheets, or class notes. No school book noted.',notes:'Customize the name and tasks to match the exact school subject.'},
+    {id:'religion',name:'Religion',emoji:'🕌',private:false,minutes:10,weeklyTarget:0,method:'Understand the meaning, learn a small section, review yesterday’s part, then answer 3 questions. Use short, regular revision.',sources:'School book + teacher notes + assigned memorization.',notes:'Keep it meaningful and calm; not a competition.'},
+    {id:'sketch',name:'Sketch / Art',emoji:'🎨',private:false,minutes:20,weeklyTarget:0,method:'Prepare materials, follow the assignment steps, then add one creative detail. Take a photo of the finished work if useful.',sources:'Teacher instructions, class examples, and drawing materials.',notes:'Creative time can also be a relaxing break.'},
+    {id:'french',name:'French',emoji:'🇫🇷',private:false,minutes:10,weeklyTarget:0,method:'Learn 5 words, listen and repeat pronunciation, match words to meanings, then answer a tiny quiz or make one sentence.',sources:'School book + teacher notes. Optional: TV5MONDE Apprendre — https://apprendre.tv5monde.com/',notes:'Short, frequent practice is better than a long cram session.'},
+    {id:'programming',name:'Programming (Extra Quest)',emoji:'👨‍💻',private:false,minutes:25,weeklyTarget:0,method:'Choose one small project, build a tiny part, test it, and write what you learned. Ask for hints before asking for a full solution.',sources:'Scholarship lessons and instructor resources. Add coding platform/project links here.',notes:'Extra learning should stay fun and should not replace school rest time.'}
+  ];
 
-  const stats = allIds.map(id => {
-    const s = getSubjectObj(id);
-    const subMissions = weekMissions.filter(m => m.subject === id);
-    const studiedCount = subMissions.filter(m => m.done).length;
-    const plannedCount = subMissions.length;
-    const target = Number(s.weeklyTarget) || 0;
-    const denominator = target > 0 ? Math.max(target, plannedCount) : plannedCount;
-    const progressPct = denominator > 0 ? Math.min(100, Math.round((studiedCount / denominator) * 100)) : 0;
-    const minutesStudied = subMissions.filter(m => m.done).reduce((sum, m) => sum + (Number(m.minutes)||0), 0);
-    const totalMinutesPlanned = subMissions.reduce((sum, m) => sum + (Number(m.minutes)||0), 0);
-    // "Up to date" only considers missions scheduled on or before the selected day; future missions never make a subject behind.
-    const dueMissions = subMissions.filter(m => m.date <= dateStr);
-    const dueDone = dueMissions.filter(m => m.done).length;
-    const behindCount = dueMissions.filter(m => !m.done).length;
-    const statusPct = dueMissions.length ? Math.round((dueDone / dueMissions.length) * 100) : 100;
-    return {
-      id,
-      name: s.name,
-      emoji: s.emoji || '📚',
-      studiedCount,
-      plannedCount,
-      target,
-      denominator,
-      progressPct,
-      minutesStudied,
-      totalMinutesPlanned,
-      dueCount: dueMissions.length,
-      dueDone,
-      behindCount,
-      statusPct,
-      isUpToDate: behindCount === 0,
-      hasActivity: plannedCount > 0 || studiedCount > 0
-    };
-  });
+  // ====================== STATE ======================
+  let deletedDefaultIds = [];
+  let subjects = defaultSubjects.map(d => ({...d}));
+  let missions = [];
+  let dailyTemplates = [];
+  let deletedDailyTemplateIds = [];
+  let skippedDailyMissions = {};
+  let wins = {};
+  let settings = {};
+  let energy = {};
+  let manualSubjectStatus = {};
+  let selectedDate = cairoToday();
+  let boardSubjectFilter = 'all';
+  let groupBoardBySubject = false;
+  let showAllWeeklySubjects = false;
+  let missionMultiSelect = false;
+  let selectedMissionIds = new Set();
+  let isDataReady = false;
 
-  return { week, stats };
-}
-
-function switchView(id){
-  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
-  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
-  if(id==='daily')renderDaily();
-  if(id==='week')renderWeek();
-  if(id==='wins')renderWins();
-  if(id==='subjects')renderSubjects();
-}
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
-
-function init(){
-  document.getElementById('selectedDate').value=selectedDate;
-  if(!localStorage.getItem('sq_missions')){
-    missions=[];
-  }
-  applySettings();
-  renderSubjectOptions();
-  renderDaily();
-  renderSubjects();
-  renderWeek();
-  renderWins();
-  setTimeout(checkBackupReminder,700);
-}
-
-function shiftDay(n){
-  let d=new Date(selectedDate+'T12:00:00');
-  d.setDate(d.getDate()+n);
-  selectedDate=d.toISOString().slice(0,10);
-  document.getElementById('selectedDate').value=selectedDate;
-  renderDaily();
-  renderWeek();
-  renderSubjects();
-}
-function setToday(){
-  selectedDate=cairoToday();
-  document.getElementById('selectedDate').value=selectedDate;
-  renderDaily();
-  renderWeek();
-  renderSubjects();
-}
-
-function setBoardFilter(subId){
-  boardSubjectFilter = subId;
-  renderDaily();
-}
-function toggleBoardGrouping(){
-  groupBoardBySubject = !groupBoardBySubject;
-  const btn = document.getElementById('groupToggleBtn');
-  if(btn) btn.textContent = groupBoardBySubject ? '📋 List View' : '🗂️ Group by Subject/Area';
-  renderDaily();
-}
-function toggleShowAllWeekly(){
-  showAllWeeklySubjects = !showAllWeeklySubjects;
-  const btn = document.getElementById('toggleAllWeeklyBtn');
-  if(btn) btn.textContent = showAllWeeklySubjects ? 'Studied only' : 'Show all';
-  renderDailyWeeklyStats();
-  updateMultiSelectButtons();
-}
-
-function renderMissionCard(m){
-  const sub = getSubjectObj(m.subject);
-  const subjectOptionsHtml = subjects.map(s =>
-    `<option value="${esc(s.id)}" ${s.id===m.subject?'selected':''}>${esc(s.emoji||'📚')} ${esc(s.name)}</option>`
-  ).join('');
-
-  return `<div class="mission ${m.done?'done':''}" draggable="true" data-mission-id="${m.id}" ondragstart="missionDragStart(event,'${m.id}')" ondragover="missionDragOver(event)" ondragleave="event.currentTarget.classList.remove('drag-over')" ondrop="missionDrop(event,'${m.id}')" ondragend="missionDragEnd()" title="Drag to reorder this mission">
-    <div style="display:flex;flex-direction:column;gap:7px;align-items:center">
-      <input class="check" type="checkbox" ${m.done?'checked':''} onchange="toggleMission('${m.id}')" title="Mark mission complete">
-      ${missionMultiSelect?`<input type="checkbox" style="width:18px;height:18px;accent-color:#dc2626" ${selectedMissionIds.has(m.id)?'checked':''} onchange="toggleMissionSelection('${m.id}',this.checked)" title="Select for deletion">`:''}
-    </div>
-    <div>
-      <div class="mission-top">
-        <span class="subject-badge ${subjectBadgeClass(m.subject)}" title="Subject / Area">${esc(sub.emoji||'📚')} ${esc(sub.name)}</span>
-        <select class="inline-subject-select" onchange="changeMissionSubject('${m.id}', this.value)" title="Change Subject / Area directly">
-          ${subjectOptionsHtml}
-        </select>
-        ${m.type?`<span class="pill ${typeClass(m.type)}">${esc(m.type)}</span>`:''}
-        <span class="pill">⭐ ${m.xp||0} XP</span>
-      </div>
-      <div class="mission-title">${esc(m.title)} ${m.done?'✨':''}</div>
-      <div class="mission-meta">⏱️ ${m.minutes||0} min ${m.time?'• 🕒 '+esc(m.time):''}</div>
-      ${m.notes?`<div class="mission-meta">${esc(m.notes)}</div>`:''}
-    </div>
-    <div class="mission-actions" style="display:flex;gap:5px;align-items:center">
-      <button class="soft small" onclick="duplicateMission('${m.id}')" title="Duplicate on this day">⧉ Duplicate</button>
-      <button class="soft small" onclick="editMission('${m.id}')">✏️ Edit</button>
-      <button class="danger small" onclick="deleteMission('${m.id}')" title="Delete this day's mission">✕</button>
-    </div>
-  </div>`;
-}
-
-function duplicateMission(id){
-  const source=missions.find(m=>m.id===id); if(!source)return;
-  const copy={...source,id:'m'+Date.now()+Math.random().toString(36).slice(2,6),title:source.title+' (copy)',done:false,templateId:null,daily:false};
-  missions.push(copy); saveAll(); renderDaily(); renderWeek(); renderSubjects(); toast('Mission duplicated on this day ⧉');
-}
-
-let draggedMissionId=null;
-function missionDragStart(event,id){
-  draggedMissionId=id; event.dataTransfer.effectAllowed='move'; event.dataTransfer.setData('text/plain',id);
-  setTimeout(()=>event.target.closest('.mission')?.classList.add('dragging'),0);
-}
-function missionDragOver(event){event.preventDefault();event.dataTransfer.dropEffect='move';event.currentTarget.classList.add('drag-over');}
-function missionDragEnd(){document.querySelectorAll('.mission').forEach(el=>el.classList.remove('dragging','drag-over'));draggedMissionId=null;}
-function missionDrop(event,targetId){
-  event.preventDefault();event.currentTarget.classList.remove('drag-over');
-  const sourceId=draggedMissionId||event.dataTransfer.getData('text/plain'); if(!sourceId||sourceId===targetId)return missionDragEnd();
-  const day=missions.filter(m=>m.date===selectedDate).sort((a,b)=>(Number(a.boardOrder)||0)-(Number(b.boardOrder)||0)||(a.time||'').localeCompare(b.time||''));
-  const from=day.findIndex(m=>m.id===sourceId),to=day.findIndex(m=>m.id===targetId);if(from<0||to<0)return missionDragEnd();
-  const [moved]=day.splice(from,1);day.splice(to,0,moved);day.forEach((m,i)=>m.boardOrder=i+1);
-  saveAll();missionDragEnd();renderDaily();toast('🏎️ Mission moved into position!');
-}
-
-function toggleMissionMultiSelect(){
-  missionMultiSelect=!missionMultiSelect;if(!missionMultiSelect)selectedMissionIds.clear();renderDaily();
-}
-function toggleMissionSelection(id,checked){
-  if(checked)selectedMissionIds.add(id);else selectedMissionIds.delete(id);updateMultiSelectButtons();
-}
-function updateMultiSelectButtons(){
-  const selectBtn=document.getElementById('multiSelectBtn'),deleteBtn=document.getElementById('deleteSelectedBtn');
-  if(selectBtn)selectBtn.textContent=missionMultiSelect?'✕ Cancel selection':'☑ Select missions';
-  if(deleteBtn){deleteBtn.style.display=missionMultiSelect?'inline-block':'none';deleteBtn.textContent=`🗑️ Delete selected (${selectedMissionIds.size})`;deleteBtn.disabled=selectedMissionIds.size===0;}
-}
-function deleteSelectedMissions(){
-  if(!selectedMissionIds.size)return;
-  if(!confirm(`Delete ${selectedMissionIds.size} selected mission${selectedMissionIds.size===1?'':'s'} from this day?`))return;
-  missions.filter(m=>selectedMissionIds.has(m.id)).forEach(m=>{
-    if(m.templateId){skippedDailyMissions[m.date]=skippedDailyMissions[m.date]||[];if(!skippedDailyMissions[m.date].includes(m.templateId))skippedDailyMissions[m.date].push(m.templateId);}
-  });
-  missions=missions.filter(m=>!selectedMissionIds.has(m.id));selectedMissionIds.clear();missionMultiSelect=false;saveAll();renderDaily();renderWeek();renderSubjects();toast('🗑️ Selected missions removed from this day');
-}
-
-function changeMissionSubject(missionId, newSubjectId){
-  let m = missions.find(x => x.id === missionId);
-  if(!m) return;
-  m.subject = newSubjectId;
-  saveAll();
-  renderDaily();
-  renderWeek();
-  renderSubjects();
-  toast(`Moved to ${subjectLabel(newSubjectId)}`);
-}
-
-function deleteMission(missionId){
-  const mission=missions.find(x=>x.id===missionId);
-  if(mission?.templateId){
-    const template=dailyTemplates.find(t=>t.id===mission.templateId);
-    if(template?.builtIn){
-      if(!confirm('Remove this mission from this day only? It will return tomorrow as a fresh 15 XP mission.'))return;
-      skippedDailyMissions[mission.date]=skippedDailyMissions[mission.date]||[];
-      if(!skippedDailyMissions[mission.date].includes(mission.templateId))skippedDailyMissions[mission.date].push(mission.templateId);
-    }else{
-      const removeSeries=confirm('This is a custom daily mission. Click OK to stop the series, or Cancel to keep it.');
-      if(!removeSeries)return;
-      dailyTemplates=dailyTemplates.filter(t=>t.id!==mission.templateId);
-      if(!deletedDailyTemplateIds.includes(mission.templateId))deletedDailyTemplateIds.push(mission.templateId);
+  // ====================== SAVE TO FIREBASE ======================
+  async function saveAll() {
+    if (!isDataReady) return;
+    try {
+      await setDoc(dataRef, {
+        subjects,
+        deletedDefaultIds,
+        missions,
+        dailyTemplates,
+        deletedDailyTemplateIds,
+        skippedDailyMissions,
+        wins,
+        settings,
+        energy,
+        manualSubjectStatus,
+        lastUpdated: new Date().toISOString()
+      });
+    } catch (e) {
+      console.error(e);
+      toast("Cloud save failed");
     }
   }
-  missions = missions.filter(x => x.id !== missionId);
-  saveAll();
-  renderDaily();
-  renderWeek();
-  renderSubjects();
-  toast('Mission removed');
-}
 
-function renderDaily(){
-  ensureDailyMissions(selectedDate);
-  saveAll();
-  const list = document.getElementById('missionList');
-  const filterBar = document.getElementById('boardFilterBar');
-  const allDayMissions = dateMissions().sort((a,b)=>(Number(a.boardOrder)??0)-(Number(b.boardOrder)??0)||(a.time||'').localeCompare(b.time||''));
+  // ====================== REAL-TIME SYNC ======================
+  onSnapshot(dataRef, (snap) => {
+    if (snap.exists()) {
+      const d = snap.data();
+      subjects = d.subjects || defaultSubjects.map(x => ({...x}));
+      deletedDefaultIds = d.deletedDefaultIds || [];
+      missions = d.missions || [];
+      dailyTemplates = d.dailyTemplates || [];
+      deletedDailyTemplateIds = d.deletedDailyTemplateIds || [];
+      skippedDailyMissions = d.skippedDailyMissions || {};
+      wins = d.wins || {};
+      settings = d.settings || {};
+      energy = d.energy || {};
+      manualSubjectStatus = d.manualSubjectStatus || {};
+    } else {
+      isDataReady = true;
+      saveAll();
+      return;
+    }
+    isDataReady = true;
+    applySettings();
+    renderSubjectOptions();
+    renderDaily();
+    renderSubjects();
+    renderWeek();
+    renderWins();
+  });
 
-  // Build Subject/Area filter & quick-access bar on the Mission Board
-  const countsBySub = {};
-  allDayMissions.forEach(m => { countsBySub[m.subject] = (countsBySub[m.subject]||0) + 1; });
-
-  if(boardSubjectFilter !== 'all' && !subjects.some(s=>s.id===boardSubjectFilter) && !countsBySub[boardSubjectFilter]){
-    boardSubjectFilter = 'all';
+  // ====================== HELPERS ======================
+  function cairoToday() {
+    const p = new Intl.DateTimeFormat('en-US', {timeZone:'Africa/Cairo', year:'numeric', month:'2-digit', day:'2-digit'}).formatToParts(new Date());
+    const g = t => p.find(x => x.type === t)?.value;
+    return `\( {g('year')}- \){g('month')}-${g('day')}`;
+  }
+  function esc(s=''){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2300);
   }
 
-  let filterHtml = `<span class="filter-label">Subject / Area:</span>`;
-  filterHtml += `<button class="chip ${boardSubjectFilter==='all'?'active':''}" onclick="setBoardFilter('all')">All (${allDayMissions.length})</button>`;
-  subjects.forEach(s => {
-    const cnt = countsBySub[s.id] || 0;
-    if (cnt > 0 || s.id === 'prayer' || s.id === 'life' || boardSubjectFilter === s.id) {
-      filterHtml += `<button class="chip ${boardSubjectFilter===s.id?'active':''}" onclick="setBoardFilter('${esc(s.id)}')">${esc(s.emoji||'📚')} ${esc(s.name)}${cnt?` (${cnt})`:''}</button>`;
-    }
-  });
-  filterHtml += `<button class="chip add-chip" onclick="openSubject()" title="Add or edit Subjects / Areas">＋ Add / Edit Subject</button>`;
-  filterBar.innerHTML = filterHtml;
-
-  const arr = boardSubjectFilter === 'all'
-    ? allDayMissions
-    : allDayMissions.filter(m => m.subject === boardSubjectFilter);
-
-  if(!arr.length){
-    const subFilterText = boardSubjectFilter === 'all' ? '' : ` for <strong>${esc(subjectLabel(boardSubjectFilter))}</strong>`;
-    list.innerHTML = `<div class="empty">🌱 No missions yet${subFilterText} on this day.<br><br>
-      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-        <button class="primary small" onclick="openMission(${boardSubjectFilter!=='all'?`{subject:'${esc(boardSubjectFilter)}'}`:''})">＋ Add Mission${boardSubjectFilter!=='all'?' to '+esc(subjectName(boardSubjectFilter)):''}</button>
-        <button class="success small" onclick="openMission({subject:'prayer',type:'Prayer Reminder',title:'Prayer on time',minutes:10,xp:15})">🤲 Add Prayer</button>
-      </div>
-    </div>`;
-  } else if (groupBoardBySubject) {
-    // Group missions by Subject / Area
-    const groups = {};
-    arr.forEach(m => {
-      const k = m.subject || 'general';
-      if(!groups[k]) groups[k] = [];
-      groups[k].push(m);
+  // ====================== CORE FUNCTIONS ======================
+  function ensureDailyMissions(dateStr) {
+    dailyTemplates.forEach(t => {
+      const skipped = (skippedDailyMissions[dateStr] || []).includes(t.id);
+      if (!skipped && !missions.some(m => m.date === dateStr && m.templateId === t.id)) {
+        missions.push({
+          id: 'm' + Date.now() + Math.random().toString(36).slice(2,7),
+          date: dateStr, title: t.title, subject: t.subject, type: t.type,
+          time: t.time || '', minutes: t.minutes || 20, xp: t.xp || 0,
+          notes: t.notes || '', done: false, templateId: t.id, daily: true
+        });
+      }
     });
-    list.innerHTML = Object.keys(groups).map(subId => {
-      const gMissions = groups[subId];
-      const gDone = gMissions.filter(m=>m.done).length;
-      const gPct = Math.round((gDone / gMissions.length) * 100);
-      return `<div class="group-header">
-        <span>${esc(subjectLabel(subId))}</span>
-        <span>${gDone}/${gMissions.length} done (${gPct}%)</span>
-      </div>` + gMissions.map(renderMissionCard).join('');
-    }).join('');
-  } else {
-    list.innerHTML = arr.map(renderMissionCard).join('');
+  }
+  function dateMissions() {
+    ensureDailyMissions(selectedDate);
+    return missions.filter(m => m.date === selectedDate);
+  }
+  function getSubjectObj(id) {
+    const f = subjects.find(s => s.id === id);
+    if (f) return f;
+    if (id === 'prayer') return {id:'prayer',name:'Prayer',emoji:'🤲'};
+    if (id === 'life') return {id:'life',name:'Life & Wellbeing',emoji:'🌟'};
+    return {id: id||'general', name: id||'General', emoji:'📌'};
+  }
+  function subjectName(id){ return getSubjectObj(id).name; }
+  function subjectLabel(id){ const s = getSubjectObj(id); return `${s.emoji||'📚'} ${s.name}`; }
+  function subjectBadgeClass(id){ return id==='prayer'?'prayer':id==='life'?'life':''; }
+  function typeClass(t){ if(t==='School HW')return'school'; if(t==='Private HW')return'private'; if(t==='Private Lesson')return'lesson'; if(['Life Skill','Prayer Reminder','Sport / Movement'].includes(t))return'life'; return''; }
+
+  function getWeekBounds(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    const day = d.getDay();
+    const monday = new Date(d);
+    monday.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const x = new Date(monday);
+      x.setDate(monday.getDate() + i);
+      days.push(x.toISOString().slice(0,10));
+    }
+    return {
+      monday, sunday: new Date(days[6]+'T12:00:00'), days,
+      label: `${monday.toLocaleDateString('en-GB',{month:'short',day:'numeric'})} – ${new Date(days[6]+'T12:00:00').toLocaleDateString('en-GB',{month:'short',day:'numeric'})}`
+    };
   }
 
-  let done = allDayMissions.filter(m=>m.done).length,
-      percent = allDayMissions.length ? Math.round(done/allDayMissions.length*100) : 0;
-  document.getElementById('progressText').textContent = percent+'%';
-  document.getElementById('progressBar').style.width = percent+'%';
-  document.getElementById('doneText').textContent = `${done} / ${allDayMissions.length}`;
-  document.getElementById('totalXP').textContent = missions.filter(m=>m.done).reduce((s,m)=>s+(Number(m.xp)||0),0);
-  let xp = Number(document.getElementById('totalXP').textContent),
-      level = Math.floor(xp/100)+1;
-  document.getElementById('levelText').textContent = 'Level '+level;
-  document.getElementById('levelHint').textContent = (100-(xp%100))+' XP to next level';
-  document.getElementById('dailyWin').value = wins[selectedDate]||'';
-  document.getElementById('energyTip').textContent = ({
-    High:'⚡ High energy: try a tricky subject first, then a fun challenge.',
-    Good:'🙂 Good energy: mix one hard task with one easier task.',
-    Low:'😴 Low energy: use short review, flashcards, and breaks.'
-  })[energy[selectedDate]] || 'Pick your energy level. It is okay to adjust the plan.';
-
-  renderDailyWeeklyStats();
-}
-
-function renderDailyWeeklyStats(){
-  const container = document.getElementById('dailyWeeklySubjectStats');
-  if(!container) return;
-  const { week, stats } = getWeeklySubjectStats(selectedDate);
-  const rangeEl = document.getElementById('dailyWeekRangeLabel');
-  if(rangeEl) rangeEl.textContent = `Week of ${week.label} • Progress % & study count`;
-
-  const visibleStats = showAllWeeklySubjects
-    ? stats
-    : stats.filter(st => st.hasActivity);
-
-  if(!visibleStats.length){
-    container.innerHTML = `<div class="empty" style="padding:16px">📅 No subjects studied or scheduled this week yet.<br><span class="muted" style="font-size:12px">Add missions or click "Show all" above to see all subjects.</span></div>`;
-    return;
+  function getWeeklySubjectStats(dateStr = selectedDate) {
+    const week = getWeekBounds(dateStr);
+    const weekMissions = missions.filter(m => week.days.includes(m.date));
+    const allIds = [...subjects.map(s => s.id)];
+    weekMissions.forEach(m => { if (m.subject && !allIds.includes(m.subject)) allIds.push(m.subject); });
+    return {
+      week,
+      stats: allIds.map(id => {
+        const s = getSubjectObj(id);
+        const sub = weekMissions.filter(m => m.subject === id);
+        const studied = sub.filter(m => m.done).length;
+        const planned = sub.length;
+        const target = Number(s.weeklyTarget) || 0;
+        const den = target > 0 ? Math.max(target, planned) : planned;
+        const pct = den > 0 ? Math.min(100, Math.round(studied / den * 100)) : 0;
+        const mins = sub.filter(m => m.done).reduce((a,m) => a + (Number(m.minutes)||0), 0);
+        const due = sub.filter(m => m.date <= dateStr);
+        return {
+          id, name: s.name, emoji: s.emoji||'📚',
+          studiedCount: studied, plannedCount: planned, target, denominator: den, progressPct: pct,
+          minutesStudied: mins, dueCount: due.length, dueDone: due.filter(m=>m.done).length,
+          behindCount: due.filter(m=>!m.done).length, isUpToDate: due.every(m=>m.done),
+          hasActivity: planned > 0 || studied > 0
+        };
+      })
+    };
   }
 
-  container.innerHTML = visibleStats.map(st => `
-    <div class="weekly-stat-card ${st.studiedCount>0?'studied':''}">
-      <div class="weekly-stat-top">
-        <div class="weekly-stat-name">${esc(st.emoji)} ${esc(st.name)}</div>
-        <div style="display:flex;align-items:center;gap:6px">
-          <span class="count-pill ${st.studiedCount>0?'active':''}">🔁 Studied ${st.studiedCount} ${st.studiedCount===1?'time':'times'}</span>
-          <span class="weekly-stat-pct ${st.progressPct===100?'done':''}">${st.progressPct}%</span>
-        </div>
-      </div>
-      <div class="progress ${st.progressPct===100?'green':''}" style="margin-top:2px"><span style="width:${st.progressPct}%"></span></div>
-      <div class="weekly-stat-meta">
-        <span>✅ ${st.studiedCount} / ${st.denominator} completed this week${st.target>0?` (Goal: ${st.target})`:''}</span>
-        <span>⏱️ ${st.minutesStudied} min studied</span>
-      </div>
-    </div>
-  `).join('');
-}
-
-function toggleMission(id){
-  let m=missions.find(x=>x.id===id);
-  if(!m)return;
-  m.done=!m.done;
-  saveAll();
-  renderDaily();
-  renderWeek();
-  renderSubjects();
-  toast(m.done?`⚽ GOAL! Mission complete — +${m.xp||0} Boost XP! 🚀`:'Mission reopened');
-}
-
-function renderSubjectOptions(selectedId){
-  let el=document.getElementById('mSubject');
-  if(!el)return;
-  let current = selectedId || el.value;
-  el.innerHTML = subjects.map(s=>`<option value="${esc(s.id)}">${esc(s.emoji||'📚')} ${esc(s.name)}</option>`).join('');
-  if(current && subjects.some(s=>s.id===current)) el.value=current;
-}
-
-function toggleQuickSubjectBox(){
-  const box = document.getElementById('quickSubjectBox');
-  if(!box) return;
-  box.classList.toggle('show');
-  if(box.classList.contains('show')){
-    document.getElementById('qsName').value = '';
-    document.getElementById('qsEmoji').value = '📌';
-    document.getElementById('qsName').focus();
+  function switchView(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === id));
+    document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.view === id));
+    if (id === 'daily') renderDaily();
+    if (id === 'week') renderWeek();
+    if (id === 'wins') renderWins();
+    if (id === 'subjects') renderSubjects();
   }
-}
+  document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => switchView(b.dataset.view)));
 
-function saveQuickSubject(){
-  const nameInput = document.getElementById('qsName');
-  const emojiInput = document.getElementById('qsEmoji');
-  const name = nameInput.value.trim();
-  if(!name){ toast('Please enter a Subject / Area name'); nameInput.focus(); return; }
-  const emoji = emojiInput.value.trim() || '📌';
-  const newId = 's' + Date.now();
-  const newSub = {
-    id: newId,
-    name,
-    emoji,
-    private: false,
-    minutes: 20,
-    weeklyTarget: 0,
-    method: 'Custom study or routine steps.',
-    sources: 'Add notes or links here.',
-    notes: ''
-  };
-  subjects.push(newSub);
-  saveAll();
-  renderSubjectOptions(newId);
-  renderSubjects();
-  renderDaily();
-  renderWeek();
-  document.getElementById('quickSubjectBox').classList.remove('show');
-  toast(`Added "${emoji} ${name}" to Subject / Area! ✨`);
-}
-
-function editSelectedSubjectFromMission(){
-  const subId = document.getElementById('mSubject').value;
-  if(!subId) return;
-  openSubject(subId);
-}
-function openSubjectFromMission(){
-  document.getElementById('quickSubjectBox').classList.remove('show');
-  openSubject('');
-}
-
-function openMission(preset={}){
-  document.getElementById('missionForm').reset();
-  document.getElementById('quickSubjectBox').classList.remove('show');
-  document.getElementById('missionId').value='';
-  document.getElementById('missionModalTitle').textContent='✨ Add a mission';
-  document.getElementById('mMinutes').value=preset.minutes||20;
-  document.getElementById('mXP').value=preset.xp??15;
-  document.getElementById('mType').value=preset.type||'Study / Revision';
-  if(preset.title) document.getElementById('mTitle').value=preset.title;
-  document.getElementById('mDaily').checked=!!preset.daily;
-  renderSubjectOptions(preset.subject);
-  if(preset.subject) document.getElementById('mSubject').value=preset.subject;
-  document.getElementById('missionModal').classList.add('show');
-}
-function editMission(id){
-  let m=missions.find(x=>x.id===id);
-  if(!m)return;
-  openMission();
-  document.getElementById('missionModalTitle').textContent='✏️ Edit mission';
-  document.getElementById('missionId').value=id;
-  document.getElementById('mTitle').value=m.title;
-  renderSubjectOptions(m.subject);
-  document.getElementById('mSubject').value=m.subject;
-  document.getElementById('mType').value=m.type;
-  document.getElementById('mTime').value=m.time||'';
-  document.getElementById('mMinutes').value=m.minutes||20;
-  document.getElementById('mXP').value=m.xp||0;
-  document.getElementById('mNotes').value=m.notes||'';
-  document.getElementById('mDaily').checked=!!m.daily;
-}
-function saveMission(e){
-  e.preventDefault();
-  let id=document.getElementById('missionId').value;
-  let previous=id ? missions.find(m=>m.id===id) : null;
-  let obj={
-    id:id||('m'+Date.now()),
-    date:selectedDate,
-    title:document.getElementById('mTitle').value.trim(),
-    subject:document.getElementById('mSubject').value,
-    type:document.getElementById('mType').value,
-    time:document.getElementById('mTime').value.trim(),
-    minutes:Number(document.getElementById('mMinutes').value)||20,
-    xp:Number(document.getElementById('mXP').value)||0,
-    notes:document.getElementById('mNotes').value.trim(),
-    daily:document.getElementById('mDaily').checked,
-    done:false
-  };
-  if(id){
-    let old=missions.find(m=>m.id===id);
-    obj.done=old?.done||false;
-    obj.date=old?.date||selectedDate;
-    obj.templateId=old?.templateId||null;
-    missions=missions.map(m=>m.id===id?obj:m);
-  } else {
-    missions.push(obj);
+  function shiftDay(n) {
+    const d = new Date(selectedDate + 'T12:00:00');
+    d.setDate(d.getDate() + n);
+    selectedDate = d.toISOString().slice(0,10);
+    document.getElementById('selectedDate').value = selectedDate;
+    renderDaily(); renderWeek(); renderSubjects();
   }
-  if(obj.daily){
-    const templateId=obj.templateId||('daily-'+Date.now());
-    obj.templateId=templateId;
-    const existingTemplate=dailyTemplates.find(t=>t.id===templateId);
-    const template={id:templateId,title:obj.title,subject:obj.subject,type:obj.type,time:obj.time,minutes:obj.minutes,xp:existingTemplate?.builtIn?15:obj.xp,notes:obj.notes};
-    const ti=dailyTemplates.findIndex(t=>t.id===templateId);
-    if(ti>=0) dailyTemplates[ti]={...dailyTemplates[ti],...template}; else dailyTemplates.push(template);
-  } else if(id){
-    if(previous?.templateId && !dailyTemplates.find(t=>t.id===previous.templateId)?.builtIn) dailyTemplates=dailyTemplates.filter(t=>t.id!==previous.templateId);
-    obj.templateId=null;
+  function setToday() {
+    selectedDate = cairoToday();
+    document.getElementById('selectedDate').value = selectedDate;
+    renderDaily(); renderWeek(); renderSubjects();
   }
-  saveAll();
-  closeModal('missionModal');
-  renderDaily();
-  renderWeek();
-  renderSubjects();
-  toast('Mission saved! 🚀');
-}
-function closeModal(id){document.getElementById(id).classList.remove('show')}
-function setEnergy(v){energy[selectedDate]=v;saveAll();renderDaily();toast('Energy updated 💛')}
-function saveWin(){wins[selectedDate]=document.getElementById('dailyWin').value.trim();saveAll();renderWins();toast('Your accomplishment is saved ✨')}
-function addReflectionPrompt(){let prompts=['Today I learned…','One thing I found easier was…','I am proud that I…','A challenge I tried was…','Tomorrow I want to improve…'];let box=document.getElementById('dailyWin');box.value+=(box.value?'\n':'')+prompts[Math.floor(Math.random()*prompts.length)]+' ';box.focus()}
 
-function subjectStatusLabel(value){
-  value=Number(value);
-  if(value>=90) return '✅ Up to date ('+value+'%)';
-  if(value>=65) return '🟢 Almost there ('+value+'%)';
-  if(value>=40) return '🟡 In progress ('+value+'%)';
-  return '🔴 Behind ('+value+'%)';
-}
-function setSubjectStatus(subjectId,value){
-  manualSubjectStatus[subjectId]=Number(value);
-  saveAll();
-  renderSubjectPrioritySummary();
-  const label=document.getElementById('statusLabel-'+subjectId);
-  if(label){
-    label.textContent=subjectStatusLabel(value);
-    label.style.color=Number(value)>=75?'var(--green)':Number(value)<40?'#dc2626':'#b45309';
-  }
-}
+  // ====================== RENDER FUNCTIONS ======================
+  function renderDaily() {
+    ensureDailyMissions(selectedDate);
+    const list = document.getElementById('missionList');
+    const filterBar = document.getElementById('boardFilterBar');
+    const all = dateMissions().sort((a,b) => (a.boardOrder||0) - (b.boardOrder||0) || (a.time||'').localeCompare(b.time||''));
 
-function renderSubjectPrioritySummary(){
-  const box=document.getElementById('subjectPrioritySummary');
-  if(!box)return;
-  // Prayer, Life & Wellbeing and the optional Programming quest are areas/extras, not school subjects.
-  const nonSchoolIds=['prayer','life','programming'];
-  const schoolSubjects=subjects.filter(s=>!nonSchoolIds.includes(s.id));
-  const needsPriority=schoolSubjects.filter(s=>Number(manualSubjectStatus[s.id]??50)<90)
-    .sort((a,b)=>Number(manualSubjectStatus[a.id]??50)-Number(manualSubjectStatus[b.id]??50));
-  const heroes=schoolSubjects.filter(s=>Number(manualSubjectStatus[s.id]??50)>=90)
-    .sort((a,b)=>Number(manualSubjectStatus[b.id]??50)-Number(manualSubjectStatus[a.id]??50));
-  const heroHtml=heroes.length ? `<div style="margin-top:16px;padding-top:14px;border-top:2px dashed #ddd6fe">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-      <div><div class="eyebrow" style="color:#7c3aed">🏟️ TURBO HERO GARAGE</div><h2 style="margin:3px 0">Mozi's All-Star MVP Team 🚗⚽</h2></div>
-      <span class="pill" style="background:#fef3c7;color:#92400e">🔥 ${heroes.length} turbo hero${heroes.length===1?'':'es'} unlocked</span>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px">${heroes.map((s,i)=>{
-      const score=Number(manualSubjectStatus[s.id]??50),mvp=score===100;
-      const ranks=['🚀 Aerial Ace','⚡ Turbo Striker','🛡️ Tactical Guardian','🎯 Precision MVP','🔥 Clutch Champion','🏎️ Boost Commander','⚽ Arena Playmaker','💎 Elite Scholar'];
-      const badges=['🏅 Hat-Trick Learner','🎖️ Squad MVP','👑 Crown Collector','💥 Power Play Pro','🌟 Unstoppable Streak','🧠 Strategy Master','🔷 Diamond Division','🏆 Victory Specialist'];
-      const cheers=['Stay boosted—your next goal is waiting!','Calm focus. Smart move. Big win.','You owned this round, Mozi!','Champions reset, refocus, and score again.','Your study squad can count on you!','One more mission, one more highlight play.','Fast mind, strong plan, clean finish.','You turned practice into MVP performance!'];
-      const styleIndex=(s.id.split('').reduce((n,c)=>n+c.charCodeAt(0),0)+new Date().getDate())%ranks.length;
-      return `<div style="position:relative;overflow:hidden;padding:14px;text-align:center;border-radius:16px;border:2px solid ${mvp?'#f59e0b':'#8b5cf6'};background:${mvp?'linear-gradient(145deg,#fff7cc,#ffedd5)':'linear-gradient(145deg,#f5f3ff,#ede9fe)'};box-shadow:0 6px 14px rgba(91,33,182,.12)">
-        <div style="position:absolute;right:6px;top:4px;font-size:11px;font-weight:900;color:${mvp?'#92400e':'#6d28d9'}">${mvp?'MVP 👑':'ALL-STAR'} • ${badges[styleIndex]}</div>
-        <div style="font-size:34px;margin:4px">${esc(s.emoji||'📚')}</div><strong style="display:block;font-size:15px">${esc(s.name)}</strong>
-        <div style="font-size:12px;font-weight:900;color:${mvp?'#b45309':'#7c3aed'};margin-top:5px">${mvp?'🏆 SUPERSONIC LEGEND':ranks[styleIndex]} • ${score}%</div>
-        <div style="margin-top:7px;font-size:11px;color:var(--muted)">${i===0?'🥇 Match MVP • Team Captain':badges[(styleIndex+3)%badges.length]}<br><em style="display:block;margin-top:5px">“${cheers[styleIndex]}”</em></div>
-      </div>`;
-    }).join('')}</div>
-  </div>` : '';
-  if(needsPriority.length){
-    box.innerHTML=`<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
-      <div><div class="eyebrow" style="color:var(--purple)">🎯 SCHOOL PRIORITY</div><h2 style="margin:3px 0">${needsPriority.length} school subject${needsPriority.length===1?'':'s'} not up to date</h2><p>Give priority to the lowest status first.</p></div>
-      <div style="font-size:30px;font-weight:900;color:#b45309">${needsPriority.length}</div>
-    </div>
-    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:11px">${needsPriority.map(s=>`<button class="chip" onclick="document.getElementById('statusLabel-${esc(s.id)}')?.scrollIntoView({behavior:'smooth',block:'center'})">${esc(s.emoji||'📚')} ${esc(s.name)} • ${manualSubjectStatus[s.id]??50}%</button>`).join('')}</div>${heroHtml}`;
-  }else{
-    const quotes=[
-      'Mozi, you did it! Small steps every day create amazing results. 🌟',
-      'Great work, Mozi! Be proud of your effort—your consistency is your superpower. 🚀',
-      'Mozi, every finished subject proves that you can do hard things. Keep shining! ✨',
-      'Final whistle: perfect teamwork between focus and effort. Victory secured! ⚽🏆',
-      'Supersonic study mode complete—Mozi owns the arena today! 🚗💨',
-      'Mission cleared. Squad MVP earned. Time for a champion celebration! 🎮🥇',
-      'Clutch finish, smart strategy, zero subjects left behind! 🎯🔥',
-      'Boost full. Goals scored. School league conquered! 🚀⚽'
-    ];
-    const quote=quotes[new Date().getDate()%quotes.length];
-    box.innerHTML=`<div style="text-align:center;padding:10px"><div style="font-size:38px">🏆</div><h2 style="color:var(--green);margin:5px 0">All school subjects are up to date!</h2><p style="font-size:16px;font-weight:800;color:var(--purple)">“${quote}”</p></div>${heroHtml}`;
-  }
-}
+    // Filter bar
+    const counts = {};
+    all.forEach(m => counts[m.subject] = (counts[m.subject]||0)+1);
+    let html = `<span class="filter-label">Subject / Area:</span>
+                <button class="chip \( {boardSubjectFilter==='all'?'active':''}" onclick="setBoardFilter('all')">All ( \){all.length})</button>`;
+    subjects.forEach(s => {
+      const c = counts[s.id] || 0;
+      if (c > 0 || s.id === 'prayer' || s.id === 'life' || boardSubjectFilter === s.id) {
+        html += `<button class="chip \( {boardSubjectFilter===s.id?'active':''}" onclick="setBoardFilter(' \){s.id}')">${esc(s.emoji)} \( {esc(s.name)} \){c?` (${c})`:''}</button>`;
+      }
+    });
+    html += `<button class="chip add-chip" onclick="openSubject()">＋ Add / Edit</button>`;
+    filterBar.innerHTML = html;
 
-let draggedSubjectId=null;
-function subjectDragStart(event,id){
-  draggedSubjectId=id;event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',id);
-  setTimeout(()=>document.querySelector(`[data-subject-id="${id}"]`)?.classList.add('subject-dragging'),0);
-}
-function subjectDragOver(event){event.preventDefault();event.dataTransfer.dropEffect='move';event.currentTarget.classList.add('subject-drag-over');}
-function subjectDragEnd(){document.querySelectorAll('.subject-card').forEach(el=>el.classList.remove('subject-dragging','subject-drag-over'));draggedSubjectId=null;}
-function subjectDrop(event,targetId){
-  event.preventDefault();const sourceId=draggedSubjectId||event.dataTransfer.getData('text/plain');
-  if(!sourceId||sourceId===targetId)return subjectDragEnd();
-  const from=subjects.findIndex(s=>s.id===sourceId),to=subjects.findIndex(s=>s.id===targetId);if(from<0||to<0)return subjectDragEnd();
-  const [moved]=subjects.splice(from,1);subjects.splice(to,0,moved);saveAll();subjectDragEnd();renderSubjects();renderSubjectOptions();renderDaily();toast('📚 Subject order saved!');
-}
-
-function renderSubjects(){
-  let grid=document.getElementById('subjectGrid');
-  if(!grid) return;
-  renderSubjectPrioritySummary();
-  const { week, stats } = getWeeklySubjectStats(selectedDate);
-  const statMap = {};
-  stats.forEach(st => { statMap[st.id] = st; });
-
-  grid.innerHTML=subjects.map(s=>{
-    const st = statMap[s.id] || { studiedCount:0, plannedCount:0, denominator:0, progressPct:0, minutesStudied:0, statusPct:100, behindCount:0, isUpToDate:true };
-    return `<article class="subject-card" data-subject-id="${s.id}" ondragover="subjectDragOver(event)" ondragleave="event.currentTarget.classList.remove('subject-drag-over')" ondrop="subjectDrop(event,'${s.id}')">
-      <div class="subject-top">
-        <div class="subject-icon">${esc(s.emoji||'📚')}</div>
-        <div style="flex:1">
-          <h3>${esc(s.name)}</h3>
-          <p>${s.private?'👨‍🏫 Private lesson':'📘 Self-study / routine'} • ${s.minutes||20} min</p>
-        </div>
-        <span class="subject-drag-handle" draggable="true" ondragstart="subjectDragStart(event,'${s.id}')" ondragend="subjectDragEnd()" title="Drag to reorder subjects">⠿ Drag</span>
-      </div>
-      <div class="subject-week-box">
-        <div style="padding:9px 10px;background:#fff;border:1px solid #e8e2ff;border-radius:12px;margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;align-items:center;font-weight:900;margin-bottom:5px">
-            <span>🎚️ My status</span>
-            <span id="statusLabel-${esc(s.id)}" style="color:${(manualSubjectStatus[s.id]??50)>=75?'var(--green)':(manualSubjectStatus[s.id]??50)<40?'#dc2626':'#b45309'}">${subjectStatusLabel(manualSubjectStatus[s.id]??50)}</span>
+    const arr = boardSubjectFilter === 'all' ? all : all.filter(m => m.subject === boardSubjectFilter);
+    if (!arr.length) {
+      list.innerHTML = `<div class="empty">🌱 No missions yet.<br><br>
+        <button class="primary small" onclick="openMission()">＋ Add Mission</button></div>`;
+    } else {
+      list.innerHTML = arr.map(m => {
+        const sub = getSubjectObj(m.subject);
+        return `<div class="mission ${m.done?'done':''}">
+          <input class="check" type="checkbox" \( {m.done?'checked':''} onchange="toggleMission(' \){m.id}')">
+          <div>
+            <div class="mission-top">
+              <span class="subject-badge \( {subjectBadgeClass(m.subject)}"> \){esc(sub.emoji)} ${esc(sub.name)}</span>
+              ${m.type?`<span class="pill \( {typeClass(m.type)}"> \){esc(m.type)}</span>`:''}
+              <span class="pill">⭐ ${m.xp||0} XP</span>
+            </div>
+            <div class="mission-title">${esc(m.title)} ${m.done?'✨':''}</div>
+            <div class="mission-meta">⏱️ ${m.minutes||0} min ${m.time?'• 🕒 '+esc(m.time):''}</div>
+            \( {m.notes?`<div class="mission-meta"> \){esc(m.notes)}</div>`:''}
           </div>
-          <input type="range" min="0" max="100" step="5" value="${manualSubjectStatus[s.id]??50}" oninput="setSubjectStatus('${esc(s.id)}',this.value)" style="width:100%;accent-color:var(--purple);cursor:pointer" aria-label="Manual status for ${esc(s.name)}">
-          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:800"><span>Behind</span><span>In progress</span><span>Up to date</span></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-          <strong>📊 Weekly Progress (${esc(week.label)})</strong>
-          <span style="font-weight:900;color:${st.progressPct===100?'var(--green)':'var(--purple)'}">${st.progressPct}%</span>
-        </div>
-        <div class="progress ${st.progressPct===100?'green':''}" style="margin:4px 0 6px"><span style="width:${st.progressPct}%"></span></div>
-        <div style="display:flex;justify-content:space-between;color:var(--muted)">
-          <span>🔁 Studied <strong>${st.studiedCount}</strong> ${st.studiedCount===1?'time':'times'} (${st.studiedCount}/${st.denominator} done)</span>
-          <span>⏱️ ${st.minutesStudied}m</span>
-        </div>
-      </div>
-      <div class="mini"><strong>🧠 Study / practice method</strong><br>${esc(s.method||'Add your preferred study method.')}</div>
-      <div class="mini"><strong>🔗 Sources</strong><br>${esc(s.sources||'Add trusted sources and teacher links.')}</div>
-      ${s.notes?`<div class="mini"><strong>💡 Note</strong><br>${esc(s.notes)}</div>`:''}
-      <div class="actions">
-        <button class="soft small" onclick="openSubject('${s.id}')">✏️ Edit</button>
-        <button class="primary small" onclick="addStudyMission('${s.id}')">＋ Add mission</button>
-      </div>
-    </article>`;
-  }).join('');
-}
+          <div style="display:flex;gap:5px">
+            <button class="soft small" onclick="editMission('${m.id}')">✏️</button>
+            <button class="danger small" onclick="deleteMission('${m.id}')">✕</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
 
-function openSubject(id=''){
-  let s=subjects.find(x=>x.id===id);
-  document.getElementById('subjectForm').reset();
-  document.getElementById('sId').value=s?.id||'';
-  document.getElementById('subjectModalTitle').textContent=s?'✏️ Edit Subject / Area':'📚 Add Subject / Area';
-  document.getElementById('deleteSubjectBtn').style.visibility=s?'visible':'hidden';
-  document.getElementById('sName').value=s?.name||'';
-  document.getElementById('sEmoji').value=s?.emoji||'📚';
-  document.getElementById('sPrivate').value=s?.private?'yes':'no';
-  document.getElementById('sMinutes').value=s?.minutes||20;
-  document.getElementById('sWeeklyTarget').value=s?.weeklyTarget||0;
-  document.getElementById('sMethod').value=s?.method||'';
-  document.getElementById('sSources').value=s?.sources||'';
-  document.getElementById('sNotes').value=s?.notes||'';
-  document.getElementById('subjectModal').classList.add('show');
-}
+    // Stats
+    const done = all.filter(m => m.done).length;
+    const pct = all.length ? Math.round(done/all.length*100) : 0;
+    document.getElementById('progressText').textContent = pct + '%';
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('doneText').textContent = `${done} / ${all.length}`;
+    const totalXP = missions.filter(m => m.done).reduce((s,m) => s + (Number(m.xp)||0), 0);
+    document.getElementById('totalXP').textContent = totalXP;
+    const level = Math.floor(totalXP/100) + 1;
+    document.getElementById('levelText').textContent = 'Level ' + level;
+    document.getElementById('levelHint').textContent = (100 - (totalXP % 100)) + ' XP to next level';
+    document.getElementById('dailyWin').value = wins[selectedDate] || '';
+  }
 
-function saveSubject(e){
-  e.preventDefault();
-  let id=document.getElementById('sId').value;
-  let newId = id || ('s'+Date.now());
-  let obj={
-    id:newId,
-    name:document.getElementById('sName').value.trim(),
-    emoji:document.getElementById('sEmoji').value.trim()||'📚',
-    private:document.getElementById('sPrivate').value==='yes',
-    minutes:Number(document.getElementById('sMinutes').value)||20,
-    weeklyTarget:Number(document.getElementById('sWeeklyTarget').value)||0,
-    method:document.getElementById('sMethod').value.trim(),
-    sources:document.getElementById('sSources').value.trim(),
-    notes:document.getElementById('sNotes').value.trim()
+  function renderSubjects() {
+    const grid = document.getElementById('subjectGrid');
+    if (!grid) return;
+    grid.innerHTML = subjects.map(s => `
+      <article class="subject-card">
+        <div class="subject-top">
+          <div class="subject-icon">${esc(s.emoji||'📚')}</div>
+          <div style="flex:1"><h3>${esc(s.name)}</h3>
+            <p>${s.private?'👨‍🏫 Private':'📘 Self-study'} • ${s.minutes||20} min</p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="soft small" onclick="openSubject('${s.id}')">✏️ Edit</button>
+          <button class="primary small" onclick="addStudyMission('${s.id}')">＋ Mission</button>
+        </div>
+      </article>`).join('');
+  }
+
+  function renderWeek() {
+    const el = document.getElementById('weekGrid');
+    if (!el) return;
+    const { week } = getWeeklySubjectStats();
+    let out = '';
+    for (let i = 0; i < 7; i++) {
+      const key = week.days[i];
+      const x = new Date(key + 'T12:00:00');
+      const arr = missions.filter(m => m.date === key);
+      const done = arr.filter(m => m.done).length;
+      out += `<div class="week-row">
+        <div><strong>${x.toLocaleDateString('en-GB',{weekday:'short'})}</strong><br>
+          <span class="muted">${key.slice(5)}</span><br>
+          <button class="soft small" onclick="selectWeekDay('${key}')">Open</button>
+        </div>
+        <div><strong>Missions</strong><br>
+          \( {arr.length ? arr.map(m => `<div> \){m.done?'✅':'⬜'} ${esc(m.title)}</div>`).join('') : '—'}
+        </div>
+        <div><strong>Progress</strong><br>\( {done}/ \){arr.length}</div>
+      </div>`;
+    }
+    el.innerHTML = out;
+  }
+
+  function renderWins() {
+    const el = document.getElementById('winsList');
+    if (!el) return;
+    const keys = Object.keys(wins).filter(k => wins[k]).sort().reverse();
+    el.innerHTML = keys.length
+      ? keys.map(k => `<div class="mission"><div>🌟</div><div><strong>\( {esc(k)}</strong><div> \){esc(wins[k]).replace(/\n/g,'<br>')}</div></div></div>`).join('')
+      : '<div class="empty">Your wins will appear here 🌱</div>';
+  }
+
+  function renderSubjectOptions(selected) {
+    const el = document.getElementById('mSubject');
+    if (!el) return;
+    el.innerHTML = subjects.map(s => `<option value="\( {esc(s.id)}"> \){esc(s.emoji||'📚')} ${esc(s.name)}</option>`).join('');
+    if (selected) el.value = selected;
+  }
+
+  function applySettings() {
+    document.getElementById('childName').value = settings.childName || '';
+    document.getElementById('grade').value = settings.grade || 'Prep 1';
+    document.getElementById('xpGoal').value = settings.xpGoal || 100;
+    document.getElementById('weeklyGoal').value = settings.weeklyGoal || 400;
+    document.getElementById('rewardText').value = settings.rewardText || '';
+    document.querySelector('.hero h1').textContent = '🏆🥇🎮 Study Champions League' + (settings.childName ? ' • ' + settings.childName : '');
+  }
+
+  // ====================== ACTIONS ======================
+  window.setBoardFilter = setBoardFilter;
+  window.openMission = function(preset = {}) {
+    document.getElementById('missionForm').reset();
+    document.getElementById('missionId').value = '';
+    document.getElementById('missionModalTitle').textContent = '✨ Add a mission';
+    document.getElementById('mMinutes').value = preset.minutes || 20;
+    document.getElementById('mXP').value = preset.xp ?? 15;
+    document.getElementById('mType').value = preset.type || 'Study / Revision';
+    if (preset.title) document.getElementById('mTitle').value = preset.title;
+    renderSubjectOptions(preset.subject);
+    document.getElementById('missionModal').classList.add('show');
   };
-  if(id) subjects=subjects.map(s=>s.id===id?obj:s);
-  else subjects.push(obj);
-  saveAll();
-  renderSubjectOptions(newId);
-  renderSubjects();
-  renderDaily();
-  renderWeek();
-  closeModal('subjectModal');
-  toast('Subject / Area updated 📚');
-}
+  window.editMission = function(id) {
+    const m = missions.find(x => x.id === id);
+    if (!m) return;
+    openMission();
+    document.getElementById('missionModalTitle').textContent = '✏️ Edit mission';
+    document.getElementById('missionId').value = id;
+    document.getElementById('mTitle').value = m.title;
+    renderSubjectOptions(m.subject);
+    document.getElementById('mSubject').value = m.subject;
+    document.getElementById('mType').value = m.type;
+    document.getElementById('mTime').value = m.time || '';
+    document.getElementById('mMinutes').value = m.minutes || 20;
+    document.getElementById('mXP').value = m.xp || 0;
+    document.getElementById('mNotes').value = m.notes || '';
+  };
+  window.saveMission = function(e) {
+    e.preventDefault();
+    const id = document.getElementById('missionId').value;
+    const obj = {
+      id: id || ('m' + Date.now()),
+      date: selectedDate,
+      title: document.getElementById('mTitle').value.trim(),
+      subject: document.getElementById('mSubject').value,
+      type: document.getElementById('mType').value,
+      time: document.getElementById('mTime').value.trim(),
+      minutes: Number(document.getElementById('mMinutes').value) || 20,
+      xp: Number(document.getElementById('mXP').value) || 0,
+      notes: document.getElementById('mNotes').value.trim(),
+      done: false
+    };
+    if (id) {
+      const old = missions.find(m => m.id === id);
+      obj.done = old?.done || false;
+      obj.date = old?.date || selectedDate;
+      missions = missions.map(m => m.id === id ? obj : m);
+    } else {
+      missions.push(obj);
+    }
+    saveAll();
+    closeModal('missionModal');
+    renderDaily(); renderWeek(); renderSubjects();
+    toast('Mission saved! 🚀');
+  };
+  window.toggleMission = function(id) {
+    const m = missions.find(x => x.id === id);
+    if (!m) return;
+    m.done = !m.done;
+    saveAll();
+    renderDaily(); renderWeek(); renderSubjects();
+    toast(m.done ? `⚽ GOAL! +${m.xp||0} XP` : 'Mission reopened');
+  };
+  window.deleteMission = function(id) {
+    if (!confirm('Delete this mission?')) return;
+    missions = missions.filter(x => x.id !== id);
+    saveAll();
+    renderDaily(); renderWeek(); renderSubjects();
+    toast('Mission removed');
+  };
+  window.openSubject = function(id = '') {
+    const s = subjects.find(x => x.id === id);
+    document.getElementById('subjectForm').reset();
+    document.getElementById('sId').value = s?.id || '';
+    document.getElementById('subjectModalTitle').textContent = s ? '✏️ Edit Subject' : '📚 Add Subject';
+    document.getElementById('deleteSubjectBtn').style.visibility = s ? 'visible' : 'hidden';
+    document.getElementById('sName').value = s?.name || '';
+    document.getElementById('sEmoji').value = s?.emoji || '📚';
+    document.getElementById('sPrivate').value = s?.private ? 'yes' : 'no';
+    document.getElementById('sMinutes').value = s?.minutes || 20;
+    document.getElementById('sWeeklyTarget').value = s?.weeklyTarget || 0;
+    document.getElementById('sMethod').value = s?.method || '';
+    document.getElementById('sSources').value = s?.sources || '';
+    document.getElementById('sNotes').value = s?.notes || '';
+    document.getElementById('subjectModal').classList.add('show');
+  };
+  window.saveSubject = function(e) {
+    e.preventDefault();
+    const id = document.getElementById('sId').value;
+    const obj = {
+      id: id || ('s' + Date.now()),
+      name: document.getElementById('sName').value.trim(),
+      emoji: document.getElementById('sEmoji').value.trim() || '📚',
+      private: document.getElementById('sPrivate').value === 'yes',
+      minutes: Number(document.getElementById('sMinutes').value) || 20,
+      weeklyTarget: Number(document.getElementById('sWeeklyTarget').value) || 0,
+      method: document.getElementById('sMethod').value.trim(),
+      sources: document.getElementById('sSources').value.trim(),
+      notes: document.getElementById('sNotes').value.trim()
+    };
+    if (id) subjects = subjects.map(s => s.id === id ? obj : s);
+    else subjects.push(obj);
+    saveAll();
+    renderSubjectOptions(obj.id);
+    renderSubjects(); renderDaily(); renderWeek();
+    closeModal('subjectModal');
+    toast('Subject saved 📚');
+  };
+  window.deleteSubject = function() {
+    const id = document.getElementById('sId').value;
+    if (!id || !confirm('Delete this subject?')) return;
+    subjects = subjects.filter(s => s.id !== id);
+    saveAll();
+    renderSubjectOptions();
+    renderSubjects(); renderDaily(); renderWeek();
+    closeModal('subjectModal');
+    toast('Subject deleted');
+  };
+  window.addStudyMission = function(id) {
+    const s = subjects.find(x => x.id === id);
+    if (!s) return;
+    openMission({subject: id, type: id==='prayer'?'Prayer Reminder':id==='life'?'Life Skill':'Study / Revision', minutes: s.minutes, xp: 15});
+    document.getElementById('mTitle').value = (id==='prayer'?'Prayer: ':'Review: ') + s.name;
+  };
+  window.saveWin = function() {
+    wins[selectedDate] = document.getElementById('dailyWin').value.trim();
+    saveAll();
+    renderWins();
+    toast('Win saved ✨');
+  };
+  window.saveSettings = function() {
+    settings = {
+      childName: document.getElementById('childName').value,
+      grade: document.getElementById('grade').value,
+      xpGoal: Number(document.getElementById('xpGoal').value) || 100,
+      weeklyGoal: Number(document.getElementById('weeklyGoal').value) || 400,
+      rewardText: document.getElementById('rewardText').value
+    };
+    saveAll();
+    applySettings();
+    toast('Settings saved');
+  };
+  window.closeModal = function(id) { document.getElementById(id).classList.remove('show'); };
+  window.selectWeekDay = function(key) {
+    selectedDate = key;
+    document.getElementById('selectedDate').value = key;
+    switchView('daily');
+  };
+  window.setEnergy = function(v) {
+    energy[selectedDate] = v;
+    saveAll();
+    renderDaily();
+    toast('Energy updated');
+  };
+  window.exportData = function() {
+    const data = {subjects, missions, dailyTemplates, wins, settings, energy, manualSubjectStatus};
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'study-quest-backup.json';
+    a.click();
+  };
+  window.importData = function(e) {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const d = JSON.parse(r.result);
+        if (d.subjects) subjects = d.subjects;
+        if (d.missions) missions = d.missions;
+        if (d.wins) wins = d.wins;
+        if (d.settings) settings = d.settings;
+        if (d.energy) energy = d.energy;
+        saveAll();
+        applySettings();
+        renderDaily(); renderSubjects(); renderWeek(); renderWins();
+        toast('Backup restored');
+      } catch { toast('Invalid file'); }
+    };
+    r.readAsText(f);
+  };
+  window.resetApp = function() {
+    if (!confirm('Delete ALL data for everyone?')) return;
+    subjects = defaultSubjects.map(d => ({...d}));
+    missions = []; dailyTemplates = []; wins = {}; settings = {}; energy = {};
+    manualSubjectStatus = {}; deletedDefaultIds = [];
+    saveAll();
+    location.reload();
+  };
 
-function deleteSubject(){
-  let id=document.getElementById('sId').value;
-  if(!id)return;
-  if(!confirm('Delete this Subject / Area from your map? Existing missions will remain.'))return;
-  if(!deletedDefaultIds.includes(id)) deletedDefaultIds.push(id);
-  subjects=subjects.filter(s=>s.id!==id);
-  saveAll();
-  renderSubjectOptions();
-  renderSubjects();
-  renderDaily();
-  renderWeek();
-  closeModal('subjectModal');
-  toast('Subject / Area deleted');
-}
-
-function addStudyMission(id){
-  let s=subjects.find(x=>x.id===id);
-  if(!s)return;
-  let defaultType = id==='prayer' ? 'Prayer Reminder' : (id==='life' ? 'Life Skill' : 'Study / Revision');
-  openMission({subject:id,type:defaultType,minutes:s.minutes,xp:15});
-  document.getElementById('mTitle').value=(id==='prayer'?'Prayer: ':'Review: ')+s.name;
-  document.getElementById('mNotes').value=s.method ? ('Method: '+s.method) : '';
-}
-
-function renderWeek(){
-  let el=document.getElementById('weekGrid');
-  if(!el)return;
-  const { week, stats } = getWeeklySubjectStats(selectedDate);
-  const subTitle = document.getElementById('weekSummarySubtitle');
-  if(subTitle) subTitle.textContent = `Week of ${week.label} • See progress % and how many times each subject is studied this week.`;
-
-  const weekSubGrid = document.getElementById('weeklySubjectGrid');
-  if(weekSubGrid){
-    weekSubGrid.innerHTML = stats.map(st => `
-      <div class="weekly-stat-card ${st.studiedCount>0?'studied':''}">
-        <div class="weekly-stat-top">
-          <div class="weekly-stat-name">${esc(st.emoji)} ${esc(st.name)}</div>
-          <span class="weekly-stat-pct ${st.progressPct===100?'done':''}">${st.progressPct}%</span>
-        </div>
-        <div class="progress ${st.progressPct===100?'green':''}"><span style="width:${st.progressPct}%"></span></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px">
-          <span class="count-pill ${st.studiedCount>0?'active':''}">🔁 Studied ${st.studiedCount} ${st.studiedCount===1?'time':'times'}</span>
-          <span class="muted" style="font-size:11px">${st.studiedCount}/${st.denominator} missions • ${st.minutesStudied}m</span>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  let out='';
-  for(let i=0;i<7;i++){
-    let key = week.days[i];
-    let x = new Date(key+'T12:00:00');
-    let arr = missions.filter(m=>m.date===key),
-        lessons = arr.filter(m=>m.type==='Private Lesson'),
-        hw = arr.filter(m=>m.type!=='Private Lesson'),
-        done = arr.filter(m=>m.done).length,
-        dayPct = arr.length ? Math.round(done/arr.length*100) : 0;
-    out += `<div class="week-row">
-      <div>
-        <strong>${x.toLocaleDateString('en-GB',{weekday:'short'})}</strong><br>
-        <span class="muted" style="font-size:12px">${key.slice(5)}</span><br>
-        <button class="soft small" style="margin-top:6px" onclick="selectWeekDay('${key}')">Open day</button>
-      </div>
-      <div>
-        <strong>📌 Missions &amp; Homework (by Subject/Area)</strong>
-        <div class="muted" style="font-size:12px;margin-top:4px">
-          ${hw.length ? hw.map(m=>`<div style="margin-bottom:4px">${m.done?'✅':'⬜'} <span class="subject-badge ${subjectBadgeClass(m.subject)}" style="padding:2px 6px;font-size:11px">${esc(subjectLabel(m.subject))}</span> <strong>${esc(m.title)}</strong></div>`).join('') : '—'}
-        </div>
-      </div>
-      <div>
-        <strong>👨‍🏫 Lessons &amp; Daily Progress</strong>
-        <div class="muted" style="font-size:12px;margin-top:4px">
-          ${lessons.length ? lessons.map(m=>`<div style="margin-bottom:4px">🕒 ${esc((m.time?m.time+' · ':'')+subjectLabel(m.subject)+' — '+m.title)}</div>`).join('') : 'No private lesson slot'}
-          <div style="margin-top:6px;font-weight:700;color:var(--ink)">✅ ${done}/${arr.length} missions (${dayPct}%)</div>
-        </div>
-      </div>
-    </div>`;
-  }
-  el.innerHTML=out;
-}
-
-function selectWeekDay(key){selectedDate=key;document.getElementById('selectedDate').value=key;switchView('daily');renderDaily()}
-function renderWins(){let el=document.getElementById('winsList');if(!el)return;let keys=Object.keys(wins).filter(k=>wins[k]).sort().reverse();el.innerHTML=keys.length?keys.map(k=>`<div class="mission"><div>🌟</div><div><strong>${esc(k)}</strong><div>${esc(wins[k]).replace(/\n/g,'<br>')}</div></div><button class="soft small" onclick="editWin('${k}')">✏️ Edit</button></div>`).join(''):'<div class="empty">Your wins will appear here. Save one small accomplishment each day. 🌱</div>'}
-function editWin(k){selectedDate=k;document.getElementById('selectedDate').value=k;switchView('daily');renderDaily();document.getElementById('dailyWin').focus()}
-function clearWins(){if(!confirm('Clear all accomplishment notes?'))return;wins={};saveAll();renderWins();renderDaily()}
-function saveSettings(){settings={childName:document.getElementById('childName').value,grade:document.getElementById('grade').value,xpGoal:Number(document.getElementById('xpGoal').value)||100,weeklyGoal:Number(document.getElementById('weeklyGoal').value)||400,rewardText:document.getElementById('rewardText').value};saveAll();applySettings();toast('Settings saved 💜')}
-function applySettings(){document.getElementById('childName').value=settings.childName||'';document.getElementById('grade').value=settings.grade||'Prep 1';document.getElementById('xpGoal').value=settings.xpGoal||100;document.getElementById('weeklyGoal').value=settings.weeklyGoal||400;document.getElementById('rewardText').value=settings.rewardText||'';document.querySelector('.hero h1').textContent='🏆🥇🎮 Study Champions League'+(settings.childName?' • '+settings.childName:'')}
-function printDaily(){switchView('daily');window.print()}
-function exportData(){
-  let data={version:3,exportedAt:new Date().toISOString(),subjects,deletedDefaultIds,missions,dailyTemplates,deletedDailyTemplateIds,skippedDailyMissions,wins,settings,energy,manualSubjectStatus};
-  let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);a.download='study-quest-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);
-  localStorage.setItem('sq_last_backup',Date.now());toast('Complete backup downloaded ⬇');
-}
-function checkBackupReminder(){
-  const last=Number(localStorage.getItem('sq_last_backup')||0), week=7*24*60*60*1000;
-  if(Date.now()-last>=week && confirm('Data safety reminder: download a complete Study Quest backup now?')) exportData();
-}
-function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(d.subjects)subjects=d.subjects;if(d.deletedDefaultIds)deletedDefaultIds=d.deletedDefaultIds;if(d.missions)missions=d.missions;if(d.wins)wins=d.wins;if(d.settings)settings=d.settings;if(d.energy)energy=d.energy;if(d.dailyTemplates)dailyTemplates=d.dailyTemplates;if(d.deletedDailyTemplateIds)deletedDailyTemplateIds=d.deletedDailyTemplateIds;if(d.skippedDailyMissions)skippedDailyMissions=d.skippedDailyMissions;if(d.manualSubjectStatus)manualSubjectStatus=d.manualSubjectStatus;saveAll();applySettings();renderSubjectOptions();renderDaily();renderSubjects();renderWeek();renderWins();toast('Backup restored!')}catch(err){toast('Could not read this backup file.')}e.target.value=''};r.readAsText(f)}
-function resetApp(){if(!confirm('This will delete all Study Quest data saved in this browser. Download a backup first if needed. Continue?'))return;['sq_subjects','sq_deleted_defaults','sq_missions','sq_wins','sq_settings','sq_energy','sq_daily_templates','sq_deleted_daily_templates','sq_skipped_daily_missions','sq_subject_status','sq_last_backup'].forEach(k=>localStorage.removeItem(k));location.reload()}
-init();
+  // Start
+  document.getElementById('selectedDate').value = selectedDate;
+  document.getElementById('selectedDate').onchange = () => {
+    selectedDate = document.getElementById('selectedDate').value;
+    renderDaily(); renderWeek(); renderSubjects();
+  };
 </script>
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4476902487de193',t:'MTc5MDk4MjkzNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
